@@ -2,6 +2,7 @@ package arkanoid;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.tools.SizeValue;
@@ -49,7 +50,9 @@ public class ScreenManager extends AbstractGameState implements ScreenController
 
     @Override
     public void onBallCleared() {
-        game.configureLevel();
+        game.disableKeys();
+        nifty.getScreen("level").findElementByName("level_text").getRenderer(TextRenderer.class).setText("Level " + getLevel());
+        delayLoading("level", 1000);
     }
 
     @Override

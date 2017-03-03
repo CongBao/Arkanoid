@@ -233,7 +233,12 @@ public class Game extends SimpleApplication {
      * Disable the keyboard inputs.
      */
     public void disableKeys() {
-        inputManager.clearMappings();
+        inputManager.removeListener(analogHandler);
+        inputManager.removeListener(actionHandler);
+        inputManager.deleteMapping("Left");
+        inputManager.deleteMapping("Right");
+        inputManager.deleteMapping("Space");
+        inputManager.deleteMapping("Escape");
     }
 
     /**
@@ -301,15 +306,14 @@ public class Game extends SimpleApplication {
             return;
         }
         if (clear && level < TOTAL_LEVELS) {
+            level++;
             gameState.onBallCleared();
-            level++; // ?
-            //configureLevel();
-            start = false;
-            running = false;
-            clear = false;
-            //rootNode.attachChild(arrow);
+            start = running = clear = false;
+            return;
         } else if (clear && level >= TOTAL_LEVELS) {
             gameState.onLevelCleared();
+            start = running = clear = false;
+            return;
         }
         if (balls.getChildren().isEmpty()) {
             clear = true;
@@ -317,25 +321,24 @@ public class Game extends SimpleApplication {
         }
         if (ballR.getLocalTranslation().y < DEATH_BOUNDARY) {
             gameState.onBallLost();
-            start = false;
-            running = false;
-            clear = false;
+            start = running = clear = false;
+            return;
         }
 
         ballR.move(direction.mult(ballSpeed * tpf));
 
-        if (ballR.getLocalTranslation().getX() <= LEFT_BOUNDARY) {
-            direction.setX(FastMath.abs(direction.getX()));
-        } else if (ballR.getLocalTranslation().getX() >= RIGHT_BOUNDARY) {
-            direction.setX(-FastMath.abs(direction.getX()));
-        } else if (ballR.getLocalTranslation().getY() >= TOP_BOUNDARY) {
-            direction.setY(-FastMath.abs(direction.getY()));
+        if (ballR.getLocalTranslation().x <= LEFT_BOUNDARY) {
+            direction.x = FastMath.abs(direction.x);
+        } else if (ballR.getLocalTranslation().x >= RIGHT_BOUNDARY) {
+            direction.x = -FastMath.abs(direction.x);
+        } else if (ballR.getLocalTranslation().y >= TOP_BOUNDARY) {
+            direction.y = -FastMath.abs(direction.y);
         }
 
         CollisionResults boardResults = new CollisionResults();
         board.collideWith(ballR.getWorldBound(), boardResults);
         if (boardResults.size() > 0) {
-            direction.setY(FastMath.abs(direction.getY()));
+            direction.y = FastMath.abs(direction.y);
         }
 
         CollisionResults ballResults = new CollisionResults();

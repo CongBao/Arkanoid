@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+    <useStyles filename="label/nifty-label.xml" />
+    <useStyles filename="Interface/custom-styles.xml" />
+    <useControls filename="Interface/custom-controls.xml" />
+    <!-- Start Screen -->
+    <screen id="start" controller="arkanoid.ScreenManager">
+        <layer id="background" childLayout="center">
+            <image filename="Textures/wood.jpg"></image>
+        </layer>
+        <layer id="foreground" childLayout="vertical">
+            <panel id="title" height="45%" width="75%" align="center" childLayout="center">
+                <text text="ARKANOID" font="Interface/Fonts/NotoSans100.fnt" color="#f5f5f5" width="100%" height="100%" />
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="500" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="top" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+            <panel id="buttons" height="50%" width="75%" align="center" childLayout="vertical">
+                <panel id="start_btn" height="20%" width="100%" valign="center" childLayout="center">
+                    <control id="StartBtn" name="button" label="Start" align="center" valign="center">
+                        <interact onClick="chooseScreen(info)" />
+                    </control>
+                </panel>
+                <panel id="level_btn" height="20%" width="100%" valign="center" childLayout="center">
+                    <control id="LevelBtn" name="button" label="Choose Level" align="center" valign="center">
+                        <interact onClick="chooseScreen(choose_level)" />
+                    </control>
+                </panel>
+                <panel id="quit_btn" height="20%" width="100%" valign="center" childLayout="center">
+                    <control id="QuitBtn" name="button" label="Quit" align="center" valign="center">
+                        <interact onClick="quitGame()" />
+                    </control>
+                </panel>
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="bottom" length="300" startDelay="1000" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+            <panel id="author" height="5%" width="40%" align="right" childLayout="horizontal">
+                <text text="Author: Cong Bao    ID: 201218770" font="Interface/Fonts/NotoSans16.fnt" color="#000" width="100%" height="100%" />
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="bottom" length="300" startDelay="500" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+        </layer>
+    </screen>
+    <!-- Info Screen -->
+    <screen id="info" controller="arkanoid.ScreenManager">
+        <layer id="vackground" childLayout="center">
+            <image filename="Textures/wood.jpg"></image>
+        </layer>
+        <layer id="foreground" childLayout="vertical">
+            <panel id="title" height="20%" width="75%" align="center" childLayout="center">
+                <text text="How to play" font="Interface/Fonts/NotoSans70.fnt" color="#f5f5f5" width="100%" height="100%" />
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="500" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="top" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+            <panel id="instruction" height="60%" width="75%" align="center" childLayout="center"></panel>
+            <panel id="button" height="20%" width="75%" align="center" childLayout="center">
+                <control id="PlayBtn" name="button" label="Play!" align="center" valign="center">
+                    <interact onClick="chooseScreen(level)" />
+                </control>
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="bottom" length="300" startDelay="1000" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+        </layer>
+    </screen>
+    <!-- Level Screen -->
+    <screen id="level" controller="arkanoid.ScreenManager">
+        <layer id="background" childLayout="center">
+            <image filename="Textures/wood.jpg"></image>
+        </layer>
+        <layer id="foreground" childLayout="vertical">
+            <panel id="space" height="20%" width="100%" childLayout="center"></panel>
+            <panel id="level" height="40%" width="100%" align="center" valign="center" childLayout="center">
+                <text text="Level ${CALL.getLevel()}" font="Interface/Fonts/NotoSans100.fnt" color="#f5f5f5" width="100%" height="100%" />
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="500" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="top" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+            <panel id="tips" height="40%" width="100%" childLayout="center"></panel>
+        </layer>
+    </screen>
+    <!-- Choose Level Screen -->
+    <screen id="choose_level" controller="arkanoid.ScreenManager">
+        <layer id="background" childLayout="center">
+            <image filename="Textures/wood.jpg"></image>
+        </layer>
+        <layer id="foreground" childLayout="vertical">
+            <panel id="title" height="20%" width="75%" align="center" childLayout="center">
+                <text text="Choose level" font="Interface/Fonts/NotoSans70.fnt" color="#f5f5f5" width="100%" height="100%" />
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="500" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="top" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+            <panel id="choices" height="60%" width="75%" align="center" childLayout="vertical"></panel>
+            <panel id="buttom" height="20%" width="75%" align="center" childLayout="center">
+                <control id="BackBtn" name="button" label="Back" align="center" valign="center">
+                    <interact onClick="chooseScreen(start)" />
+                </control>
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="bottom" length="300" startDelay="1000" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+        </layer>
+    </screen>
+    <!-- HUD Screen -->
+    <screen id="hud" controller="arkanoid.ScreenManager">
+        <layer id="background" childLayout="center">
+            <!-- <image filename="Textures/wood.jpg"></image> -->
+        </layer>
+        <layer id="foreground" childLayout="horizontal">
+            <panel id="left" height="100%" width="80%" childLayout="vertical"></panel>
+            <panel id="right" height="100%" width="20%" childLayout="vertical">
+                <panel id="score" height="15%" width="100%" childLayout="center">
+                    <control name="label" color="#000" text="123" width="100%" height="100%" />
+                </panel>
+                <panel id="level" height="15%" width="100%" childLayout="center">
+                    <control name="label" color="#000" text="level 1" width="100%" height="100%" />
+                </panel>
+                <panel id="cotent" height="70%" width="100%" valign="center"></panel>
+            </panel>
+        </layer>
+    </screen>
+    <!-- Game Over Screen -->
+    <screen id="game_over" controller="arkanoid.ScreenManager">
+        <layer id="background" childLayout="center">
+            <image filename="Textures/wood.jpg"></image>
+        </layer>
+        <layer id="foreground" childLayout="vertical">
+            <panel id="title" height="50%" width="75%" align="center" childLayout="center">
+                <text text="You lost!" font="Interface/Fonts/NotoSans70.fnt" color="#f5f5f5" width="100%" height="100%" />
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="500" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="top" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+            <panel id="buttons" height="50%" width="75%" align="center" childLayout="vertical">
+                <panel id="again_btn" height="20%" width="100%" valign="center" childLayout="center">
+                    <control id="AgainBtn" name="button" label="Try Again" align="center" valign="center">
+                    </control>
+                </panel>
+                <panel id="return_btn" height="20%" width="100%" valign="center" childLayout="center">
+                    <control id="ReturnBtn" name="button" label="Return to Title" align="center" valign="center">
+                        <interact onClick="chooseScreen(start)" />
+                    </control>
+                </panel>
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="bottom" length="300" startDelay="1000" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+        </layer>
+    </screen>
+    <!-- Example -->
+    <!--
+    <screen id="screen" controller="mygame.Main">
+        <layer id="background" backgroundColor="#003f" childLayout="center">
+            <panel id="panel" height="25%" width="35%" align="center" valign="center" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
+                <interact onClick="quit()"/>
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+                    <onHover name="pulsate" scaleFactor="0.008" startColor="#f600" endColor="#ffff" post="true"/>
+                </effect>
+                <text id="text" font="Interface/Fonts/NotoSans.fnt" color="#000f" text="Hello World!" align="center" valign="center" />
+            </panel>
+        </layer>
+        <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
+            <panel></panel>
+        </layer>
+    </screen>
+    -->
+</nifty>

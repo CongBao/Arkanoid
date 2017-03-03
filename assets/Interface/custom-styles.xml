@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty-styles>
+    <useStyles filename="Interface/fonts.xml" />
+    <useStyles filename="Interface/Styles/custom-button.xml" />
+    <useStyles filename="Interface/Styles/custom-label.xml" />
+</nifty-styles>

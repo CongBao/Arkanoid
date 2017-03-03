@@ -35,12 +35,30 @@ public class ScreenManager extends AbstractGameState implements ScreenController
         game.stop();
     }
 
+    public void tryAgain() {
+        delayLoading("level", 1000);
+    }
+
     public int getLevel() {
         return game.getLevel();
     }
 
     public int getScore() {
         return game.getScore();
+    }
+
+    @Override
+    public void onGamePaused() {
+        if (screen.getScreenId().equals("hud")) {
+            screen.findElementByName("pause_text").getRenderer(TextRenderer.class).setText("Game Paused");
+        }
+    }
+
+    @Override
+    public void onGameResumed() {
+        if (screen.getScreenId().equals("hud")) {
+            screen.findElementByName("pause_text").getRenderer(TextRenderer.class).setText("");
+        }
     }
 
     @Override

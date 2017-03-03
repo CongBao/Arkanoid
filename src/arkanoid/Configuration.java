@@ -8,7 +8,7 @@ import java.util.HashMap;
  *
  * @author Cong Bao
  */
-public class Configuration {
+public final class Configuration {
 
     public static final int TOTAL_LEVELS = 5;
     public static final int TABLE_WIDTH = 28;

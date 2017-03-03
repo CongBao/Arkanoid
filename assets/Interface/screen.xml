@@ -119,7 +119,10 @@
             <!-- <image filename="Textures/wood.jpg"></image> -->
         </layer>
         <layer id="foreground" childLayout="horizontal">
-            <panel id="left" height="100%" width="80%" childLayout="vertical"></panel>
+            <panel id="left" height="100%" width="20%" childLayout="vertical"></panel>
+            <panel id="center" height="100%" width="60%" align="center" valign="center" childLayout="center">
+                <text id="pause_text" text="" font="Interface/Fonts/NotoSans100.fnt" color="#f5f5f5" width="100%" height="100%" />
+            </panel>
             <panel id="right" height="100%" width="20%" childLayout="vertical">
                 <panel id="score" height="15%" width="100%" childLayout="center">
                     <control name="label" color="#000" text="123" width="100%" height="100%" />
@@ -147,6 +150,7 @@
             <panel id="buttons" height="50%" width="75%" align="center" childLayout="vertical">
                 <panel id="again_btn" height="20%" width="100%" valign="center" childLayout="center">
                     <control id="AgainBtn" name="button" label="Try Again" align="center" valign="center">
+                        <interact onClick="tryAgain()" />
                     </control>
                 </panel>
                 <panel id="return_btn" height="20%" width="100%" valign="center" childLayout="center">

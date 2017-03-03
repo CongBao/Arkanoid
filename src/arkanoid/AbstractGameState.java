@@ -44,6 +44,12 @@ public abstract class AbstractGameState {
     }
 
     /**
+     * Triggered each time a ball is collided and removed.
+     */
+    public void onBallRemoved() {
+    }
+
+    /**
      * Triggered when the balls in a level is cleared.
      */
     public void onBallCleared() {

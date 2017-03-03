@@ -42,6 +42,7 @@ public class Game extends SimpleApplication {
     private Geometry arrow;
     private Node table;
     private Node borders;
+    private Node obstacles;
     private Node board;
     private Node balls;
     private Node launch;
@@ -55,7 +56,7 @@ public class Game extends SimpleApplication {
     private int level = 1;
     private int score = 0;
 
-    // game statuses
+    // game flags
     private boolean initialized = false;
     private boolean start = false;
     private boolean running = false;
@@ -124,6 +125,7 @@ public class Game extends SimpleApplication {
     /**
      * Initialize the GUI.
      * This method is called by {@link #simpleInitApp()} automatically.
+     * Do not call it manually.
      */
     public void initGui() {
         ScreenManager screenManager = new ScreenManager(this);
@@ -139,7 +141,7 @@ public class Game extends SimpleApplication {
      * Initialize the game, which includes scene initialization and light initialization.
      * This method should be called when loading assets and create a base game scene.
      * Usually, this method should be called only once.
-     * As a result, the falg <code>initialized</code> will be set as <code>true<code/>.
+     * As a result, the flag <code>initialized</code> will be set as <code>true<code/>.
      */
     public void initGame() {
         if (initialized) {
@@ -166,9 +168,11 @@ public class Game extends SimpleApplication {
         borders.attachChild(borderL);
         borders.attachChild(borderR);
         borders.attachChild(borderT);
+        obstacles = new Node("Obstacles");
         table = new Node("Table");
         table.attachChild(plane);
         table.attachChild(borders);
+        table.attachChild(obstacles);
         rootNode.attachChild(table);
 
         // initialize boards
@@ -353,6 +357,7 @@ public class Game extends SimpleApplication {
         if (balls.getUserData("remove") != null) {
             score++;
             balls.detachChild((Spatial) balls.getUserData("remove"));
+            gameState.onBallRemoved();
             Vector3f normal = balls.getUserData("normal");
             direction = normal.mult((direction.dot(normal) * 2) / normal.dot(normal)).subtract(direction).negate();
             balls.setUserData("remove", null);
@@ -381,32 +386,16 @@ public class Game extends SimpleApplication {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public boolean isStart() {
         return start;
-    }
-
-    public void setStart(boolean start) {
-        this.start = start;
     }
 
     public boolean isRunning() {
         return running;
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
-
     public boolean isClear() {
         return clear;
-    }
-
-    public void setClear(boolean clear) {
-        this.clear = clear;
     }
 
     public AppSettings getSettings() {

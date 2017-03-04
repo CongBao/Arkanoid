@@ -102,6 +102,11 @@ public class ScreenManager extends AbstractGameState implements ScreenController
     @Override
     public void onStartScreen() {
         screen = nifty.getCurrentScreen();
+        if (screen.getScreenId().equals("start")) {
+            game.setLevel(Configuration.START_LEVEL);
+            nifty.getScreen("level").findElementByName("level_text").getRenderer(TextRenderer.class).setText("Level " + getLevel());
+
+        }
         if (screen.getScreenId().equals("level")) {
             delayLoading("hud", 2000);
         }

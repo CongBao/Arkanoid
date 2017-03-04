@@ -11,6 +11,7 @@ import java.util.HashMap;
 public final class Configuration {
 
     public static final int TOTAL_LEVELS = 6;
+    public static final int START_LEVEL = 1;
     public static final int TABLE_WIDTH = 28;
     public static final float LEFT_BOUNDARY = 2.5f;
     public static final float RIGHT_BOUNDARY = 25.5f;

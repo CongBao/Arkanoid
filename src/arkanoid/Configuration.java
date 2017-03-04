@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public final class Configuration {
 
-    public static final int TOTAL_LEVELS = 5;
+    public static final int TOTAL_LEVELS = 6;
     public static final int TABLE_WIDTH = 28;
     public static final float LEFT_BOUNDARY = 2.5f;
     public static final float RIGHT_BOUNDARY = 25.5f;
@@ -34,10 +34,10 @@ public final class Configuration {
         levConfig[0].put("boardMaxX", 22f);
         // level 2
         levConfig[1] = new HashMap<String, Number>();
-        levConfig[1].put("ballSpeed", 7f);
+        levConfig[1].put("ballSpeed", 10f);//7f
         levConfig[1].put("ballNum", 9);
         levConfig[1].put("boardLength", 3);
-        levConfig[1].put("boardSpeed", 7f);
+        levConfig[1].put("boardSpeed", 10f);//7f
         levConfig[1].put("boardMinX", 1.5f);
         levConfig[1].put("boardMaxX", 22.5f);
         // level 3
@@ -61,9 +61,17 @@ public final class Configuration {
         levConfig[4].put("ballSpeed", 12f);
         levConfig[4].put("ballNum", 7);
         levConfig[4].put("boardLength", 2);
-        levConfig[4].put("boardSpeed", 8f);
+        levConfig[4].put("boardSpeed", 10f);
         levConfig[4].put("boardMinX", 1f);
         levConfig[4].put("boardMaxX", 23f);
+        // level 6
+        levConfig[5] = new HashMap<String, Number>();
+        levConfig[5].put("ballSpeed", 15f);
+        levConfig[5].put("ballNum", 7);
+        levConfig[5].put("boardLength", 2);
+        levConfig[5].put("boardSpeed", 10f);
+        levConfig[5].put("boardMinX", 1f);
+        levConfig[5].put("boardMaxX", 23f);
 
         ballMap = new Vector3f[TOTAL_LEVELS][];
         // level 1
@@ -123,6 +131,15 @@ public final class Configuration {
         ballMap[4][4] = new Vector3f(17, 16, DEPTH);
         ballMap[4][5] = new Vector3f(20, 19, DEPTH);
         ballMap[4][6] = new Vector3f(23, 22, DEPTH);
+        // level 6
+        ballMap[5] = new Vector3f[levConfig[5].get("ballNum").intValue()];
+        ballMap[5][0] = new Vector3f(5, 16, DEPTH);
+        ballMap[5][1] = new Vector3f(8, 13, DEPTH);
+        ballMap[5][2] = new Vector3f(11, 10, DEPTH);
+        ballMap[5][3] = new Vector3f(14, 13, DEPTH);
+        ballMap[5][4] = new Vector3f(17, 16, DEPTH);
+        ballMap[5][5] = new Vector3f(20, 19, DEPTH);
+        ballMap[5][6] = new Vector3f(23, 22, DEPTH);
     }
 
 }

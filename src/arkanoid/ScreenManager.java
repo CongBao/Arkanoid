@@ -31,12 +31,14 @@ public class ScreenManager extends AbstractGameState implements ScreenController
         nifty.gotoScreen(id);
     }
 
-    public void quitGame() {
-        game.stop();
+    public void chooseLevel(String level) {
+        game.setLevel(Integer.parseInt(level));
+        nifty.getScreen("level").findElementByName("level_text").getRenderer(TextRenderer.class).setText("Level " + getLevel());
+        chooseScreen("level");
     }
 
-    public void tryAgain() {
-        delayLoading("level", 1000);
+    public void quitGame() {
+        game.stop();
     }
 
     public int getLevel() {
@@ -67,16 +69,27 @@ public class ScreenManager extends AbstractGameState implements ScreenController
     }
 
     @Override
+    public void onBallRemoved() {
+    }
+
+    @Override
     public void onBallCleared() {
         game.disableKeys();
         nifty.getScreen("level").findElementByName("level_text").getRenderer(TextRenderer.class).setText("Level " + getLevel());
-        delayLoading("level", 1000);
+        delayLoading("win", 1000);
     }
 
     @Override
     public void onBallLost() {
         game.disableKeys();
         delayLoading("game_over", 1000);
+    }
+
+    @Override
+    public void onLevelCleared() {
+        game.disableKeys();
+        nifty.getScreen("win").findElementByName("NextBtn").setVisible(false);
+        delayLoading("win", 1000);
     }
 
     @Override
@@ -130,9 +143,23 @@ public class ScreenManager extends AbstractGameState implements ScreenController
             playBtn.setConstraintWidth(width);
             playBtn.setConstraintHeight(height);
         } else if (screen.getScreenId().equals("choose_level")) {
+            final SizeValue levelBtnWidth = new SizeValue(String.valueOf(game.getSettings().getWidth() / 10));
+            final SizeValue levelBtnHeight = new SizeValue(String.valueOf(game.getSettings().getHeight() / 10));
+            for (int i = 0; i < Configuration.TOTAL_LEVELS; i++) {
+                Element levelBtn = screen.findElementByName("Level" + (i + 1) + "Btn");
+                levelBtn.setConstraintWidth(levelBtnWidth);
+                levelBtn.setConstraintHeight(levelBtnHeight);
+            }
             Element backBtn = screen.findElementByName("BackBtn");
             backBtn.setConstraintWidth(width);
             backBtn.setConstraintHeight(height);
+        } else if (screen.getScreenId().equals("win")) {
+            Element nextBtn = screen.findElementByName("NextBtn");
+            Element returnBtn = screen.findElementByName("ReturnBtn");
+            nextBtn.setConstraintWidth(width);
+            nextBtn.setConstraintHeight(height);
+            returnBtn.setConstraintWidth(width);
+            returnBtn.setConstraintHeight(height);
         } else if (screen.getScreenId().equals("game_over")) {
             Element againBtn = screen.findElementByName("AgainBtn");
             Element returnBtn = screen.findElementByName("ReturnBtn");

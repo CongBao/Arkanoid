@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+
     <useStyles filename="label/nifty-label.xml" />
     <useStyles filename="Interface/custom-styles.xml" />
     <useControls filename="Interface/custom-controls.xml" />
+
     <!-- Start Screen -->
     <screen id="start" controller="arkanoid.ScreenManager">
         <layer id="background" childLayout="center">
@@ -46,6 +48,7 @@
             </panel>
         </layer>
     </screen>
+
     <!-- Info Screen -->
     <screen id="info" controller="arkanoid.ScreenManager">
         <layer id="vackground" childLayout="center">
@@ -71,6 +74,7 @@
             </panel>
         </layer>
     </screen>
+
     <!-- Level Screen -->
     <screen id="level" controller="arkanoid.ScreenManager">
         <layer id="background" childLayout="center">
@@ -88,6 +92,7 @@
             <panel id="tips" height="40%" width="100%" childLayout="center"></panel>
         </layer>
     </screen>
+
     <!-- Choose Level Screen -->
     <screen id="choose_level" controller="arkanoid.ScreenManager">
         <layer id="background" childLayout="center">
@@ -101,7 +106,50 @@
                     <onEndScreen name="move" mode="out" direction="top" length="300" startDelay="500" inherit="true"/>
                 </effect>
             </panel>
-            <panel id="choices" height="60%" width="75%" align="center" childLayout="vertical"></panel>
+            <panel id="choices" height="60%" width="75%" align="center" childLayout="vertical">
+                <panel id="row_1" height="50%" width="100%" align="center" childLayout="horizontal">
+                    <panel id="col_1_1" height="100%" width="33%" align="center" valign="center" childLayout="center">
+                        <control id="Level1Btn" name="button" label="Level 1" align="center" valign="center">
+                            <interact onClick="chooseLevel(1)" />
+                        </control>
+                    </panel>
+                    <panel id="col_1_2" height="100%" width="33%" align="center" valign="center" childLayout="center">
+                        <control id="Level2Btn" name="button" label="Level 2" align="center" valign="center">
+                            <interact onClick="chooseLevel(2)" />
+                        </control>
+                    </panel>
+                    <panel id="col_1_3" height="100%" width="33%" align="center" valign="center" childLayout="center">
+                        <control id="Level3Btn" name="button" label="Level 3" align="center" valign="center">
+                            <interact onClick="chooseLevel(3)" />
+                        </control>
+                    </panel>
+                    <effect>
+                        <onStartScreen name="move" mode="in" direction="left" length="300" startDelay="1000" inherit="true"/>
+                        <onEndScreen name="move" mode="out" direction="left" length="300" startDelay="500" inherit="true"/>
+                    </effect>
+                </panel>
+                <panel id="row_2" height="50%" width="100%" align="center" childLayout="horizontal">
+                    <panel id="col_2_1" height="100%" width="33%" align="center" valign="center" childLayout="center">
+                        <control id="Level4Btn" name="button" label="Level 4" align="center" valign="center">
+                            <interact onClick="chooseLevel(4)" />
+                        </control>
+                    </panel>
+                    <panel id="col_2_2" height="100%" width="33%" align="center" valign="center" childLayout="center">
+                        <control id="Level5Btn" name="button" label="Level 5" align="center" valign="center">
+                            <interact onClick="chooseLevel(5)" />
+                        </control>
+                    </panel>
+                    <panel id="col_2_3" height="100%" width="33%" align="center" valign="center" childLayout="center">
+                        <control id="Level6Btn" name="button" label="Level 6" align="center" valign="center">
+                            <interact onClick="chooseLevel(6)" />
+                        </control>
+                    </panel>
+                    <effect>
+                        <onStartScreen name="move" mode="in" direction="right" length="300" startDelay="1000" inherit="true"/>
+                        <onEndScreen name="move" mode="out" direction="right" length="300" startDelay="500" inherit="true"/>
+                    </effect>
+                </panel>
+            </panel>
             <panel id="buttom" height="20%" width="75%" align="center" childLayout="center">
                 <control id="BackBtn" name="button" label="Back" align="center" valign="center">
                     <interact onClick="chooseScreen(start)" />
@@ -113,6 +161,7 @@
             </panel>
         </layer>
     </screen>
+
     <!-- HUD Screen -->
     <screen id="hud" controller="arkanoid.ScreenManager">
         <layer id="background" childLayout="center">
@@ -134,6 +183,39 @@
             </panel>
         </layer>
     </screen>
+
+    <!-- Win Screen -->
+    <screen id="win" controller="arkanoid.ScreenManager">
+        <layer id="background" childLayout="center">
+            <image filename="Textures/wood.jpg"></image>
+        </layer>
+        <layer id="foreground" childLayout="vertical">
+            <panel id="title" height="50%" width="75%" align="center" childLayout="center">
+                <text text="Congratulations!" font="Interface/Fonts/NotoSans70.fnt" color="#f5f5f5" width="100%" height="100%" />
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="500" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="top" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+            <panel id="buttons" height="50%" width="75%" align="center" childLayout="vertical">
+                <panel id="again_btn" height="20%" width="100%" valign="center" childLayout="center">
+                    <control id="NextBtn" name="button" label="Next Level" align="center" valign="center">
+                        <interact onClick="chooseScreen(level)" />
+                    </control>
+                </panel>
+                <panel id="return_btn" height="20%" width="100%" valign="center" childLayout="center">
+                    <control id="ReturnBtn" name="button" label="Return to Title" align="center" valign="center">
+                        <interact onClick="chooseScreen(start)" />
+                    </control>
+                </panel>
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="bottom" length="300" startDelay="1000" inherit="true"/>
+                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="500" inherit="true"/>
+                </effect>
+            </panel>
+        </layer>
+    </screen>
+
     <!-- Game Over Screen -->
     <screen id="game_over" controller="arkanoid.ScreenManager">
         <layer id="background" childLayout="center">
@@ -150,7 +232,7 @@
             <panel id="buttons" height="50%" width="75%" align="center" childLayout="vertical">
                 <panel id="again_btn" height="20%" width="100%" valign="center" childLayout="center">
                     <control id="AgainBtn" name="button" label="Try Again" align="center" valign="center">
-                        <interact onClick="tryAgain()" />
+                        <interact onClick="chooseScreen(level)" />
                     </control>
                 </panel>
                 <panel id="return_btn" height="20%" width="100%" valign="center" childLayout="center">
@@ -165,23 +247,5 @@
             </panel>
         </layer>
     </screen>
-    <!-- Example -->
-    <!--
-    <screen id="screen" controller="mygame.Main">
-        <layer id="background" backgroundColor="#003f" childLayout="center">
-            <panel id="panel" height="25%" width="35%" align="center" valign="center" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
-                <interact onClick="quit()"/>
-                <effect>
-                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
-                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
-                    <onHover name="pulsate" scaleFactor="0.008" startColor="#f600" endColor="#ffff" post="true"/>
-                </effect>
-                <text id="text" font="Interface/Fonts/NotoSans.fnt" color="#000f" text="Hello World!" align="center" valign="center" />
-            </panel>
-        </layer>
-        <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
-            <panel></panel>
-        </layer>
-    </screen>
-    -->
+
 </nifty>

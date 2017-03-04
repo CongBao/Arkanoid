@@ -12,6 +12,8 @@ public final class Configuration {
 
     public static final int TOTAL_LEVELS = 6;
     public static final int START_LEVEL = 1;
+    public static final int START_SCORE = 0;
+    public static final int START_COMBO = 0;
     public static final int TABLE_WIDTH = 28;
     public static final float LEFT_BOUNDARY = 2.5f;
     public static final float RIGHT_BOUNDARY = 25.5f;
@@ -27,36 +29,36 @@ public final class Configuration {
         levConfig = new HashMap[TOTAL_LEVELS];
         // level 1
         levConfig[0] = new HashMap<String, Number>();
-        levConfig[0].put("ballSpeed", 10f);//6f
+        levConfig[0].put("ballSpeed", 8f);
         levConfig[0].put("ballNum", 9);
         levConfig[0].put("boardLength", 4);
-        levConfig[0].put("boardSpeed", 10f);//6f
+        levConfig[0].put("boardSpeed", 6f);
         levConfig[0].put("boardMinX", 2f);
         levConfig[0].put("boardMaxX", 22f);
         // level 2
         levConfig[1] = new HashMap<String, Number>();
-        levConfig[1].put("ballSpeed", 10f);//7f
+        levConfig[1].put("ballSpeed", 10f);
         levConfig[1].put("ballNum", 9);
-        levConfig[1].put("boardLength", 3);
-        levConfig[1].put("boardSpeed", 10f);//7f
-        levConfig[1].put("boardMinX", 1.5f);
-        levConfig[1].put("boardMaxX", 22.5f);
+        levConfig[1].put("boardLength", 4);
+        levConfig[1].put("boardSpeed", 6f);
+        levConfig[1].put("boardMinX", 2f);
+        levConfig[1].put("boardMaxX", 22f);
         // level 3
         levConfig[2] = new HashMap<String, Number>();
-        levConfig[2].put("ballSpeed", 8f);
+        levConfig[2].put("ballSpeed", 10f);
         levConfig[2].put("ballNum", 10);
         levConfig[2].put("boardLength", 3);
-        levConfig[2].put("boardSpeed", 7f);
+        levConfig[2].put("boardSpeed", 8f);
         levConfig[2].put("boardMinX", 1.5f);
         levConfig[2].put("boardMaxX", 22.5f);
         // level 4
         levConfig[3] = new HashMap<String, Number>();
-        levConfig[3].put("ballSpeed", 9f);
+        levConfig[3].put("ballSpeed", 12f);
         levConfig[3].put("ballNum", 12);
-        levConfig[3].put("boardLength", 2);
+        levConfig[3].put("boardLength", 3);
         levConfig[3].put("boardSpeed", 8f);
-        levConfig[3].put("boardMinX", 1f);
-        levConfig[3].put("boardMaxX", 23f);
+        levConfig[3].put("boardMinX", 1.5f);
+        levConfig[3].put("boardMaxX", 22.5f);
         // level 5
         levConfig[4] = new HashMap<String, Number>();
         levConfig[4].put("ballSpeed", 12f);

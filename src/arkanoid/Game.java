@@ -55,6 +55,7 @@ public class Game extends SimpleApplication {
     // displayed parameters
     private int level = 1;
     private int score = 0;
+    private int combo = 0;
 
     // game flags
     private boolean initialized = false;
@@ -309,42 +310,67 @@ public class Game extends SimpleApplication {
         if (!running || !start) {
             return;
         }
+
+        // test if it should upgrade the level or complete the game
         if (clear && level < TOTAL_LEVELS) {
             level++;
+            score = START_SCORE;
+            combo = START_COMBO;
             gameState.onBallCleared();
             start = running = clear = false;
             return;
         } else if (clear && level >= TOTAL_LEVELS) {
+            level = START_LEVEL;
+            score = START_SCORE;
+            combo = START_COMBO;
             gameState.onLevelCleared();
             start = running = clear = false;
             return;
         }
+
+        // test if all green balls are cleared
         if (balls.getChildren().isEmpty()) {
             clear = true;
             return;
         }
+
+        // test if the red ball is lost
         if (ballR.getLocalTranslation().y < DEATH_BOUNDARY) {
+            score = START_SCORE;
+            combo = START_COMBO;
             gameState.onBallLost();
             start = running = clear = false;
             return;
         }
 
+        // keep red ball moving
         ballR.move(direction.mult(ballSpeed * tpf));
 
+        // test the collision with borders
         if (ballR.getLocalTranslation().x <= LEFT_BOUNDARY) {
             direction.x = FastMath.abs(direction.x);
+            combo = START_COMBO;
+            gameState.onCollided();
         } else if (ballR.getLocalTranslation().x >= RIGHT_BOUNDARY) {
             direction.x = -FastMath.abs(direction.x);
+            combo = START_COMBO;
+            gameState.onCollided();
         } else if (ballR.getLocalTranslation().y >= TOP_BOUNDARY) {
             direction.y = -FastMath.abs(direction.y);
+            combo = START_COMBO;
+            gameState.onCollided();
         }
 
+        // test the collision with board
         CollisionResults boardResults = new CollisionResults();
         board.collideWith(ballR.getWorldBound(), boardResults);
         if (boardResults.size() > 0) {
             direction.y = FastMath.abs(direction.y);
+            combo = START_COMBO;
+            gameState.onCollided();
         }
 
+        // test the collision with green balls
         CollisionResults ballResults = new CollisionResults();
         for (Spatial ball : balls.getChildren()) {
             ball.collideWith(ballR.getWorldBound(), ballResults);
@@ -355,7 +381,9 @@ public class Game extends SimpleApplication {
             }
         }
         if (balls.getUserData("remove") != null) {
-            score++;
+            combo++;
+            score += combo;
+            gameState.onCollided();
             balls.detachChild((Spatial) balls.getUserData("remove"));
             gameState.onBallRemoved();
             Vector3f normal = balls.getUserData("normal");
@@ -384,6 +412,18 @@ public class Game extends SimpleApplication {
 
     public int getScore() {
         return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getCombo() {
+        return combo;
+    }
+
+    public void setCombo(int combo) {
+        this.combo = combo;
     }
 
     public boolean isStart() {

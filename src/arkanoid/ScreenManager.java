@@ -49,6 +49,10 @@ public class ScreenManager extends AbstractGameState implements ScreenController
         return game.getScore();
     }
 
+    public int getCombo() {
+        return game.getCombo();
+    }
+
     @Override
     public void onGamePaused() {
         if (screen.getScreenId().equals("hud")) {
@@ -69,7 +73,17 @@ public class ScreenManager extends AbstractGameState implements ScreenController
     }
 
     @Override
+    public void onCollided() {
+        if (screen.getScreenId().equals("hud")) {
+            screen.findElementByName("combo_text").getRenderer(TextRenderer.class).setText("x " + getCombo());
+        }
+    }
+
+    @Override
     public void onBallRemoved() {
+        if (screen.getScreenId().equals("hud")) {
+            screen.findElementByName("score_text").getRenderer(TextRenderer.class).setText(String.valueOf(getScore()));
+        }
     }
 
     @Override
@@ -104,8 +118,16 @@ public class ScreenManager extends AbstractGameState implements ScreenController
         screen = nifty.getCurrentScreen();
         if (screen.getScreenId().equals("start")) {
             game.setLevel(Configuration.START_LEVEL);
+            game.setScore(Configuration.START_SCORE);
+            game.setCombo(Configuration.START_COMBO);
             nifty.getScreen("level").findElementByName("level_text").getRenderer(TextRenderer.class).setText("Level " + getLevel());
-
+            nifty.getScreen("hud").findElementByName("score_text").getRenderer(TextRenderer.class).setText(String.valueOf(getScore()));
+            nifty.getScreen("hud").findElementByName("combo_text").getRenderer(TextRenderer.class).setText("x " + getCombo());
+        }
+        if (screen.getScreenId().equals("hud")) {
+            screen.findElementByName("level_text").getRenderer(TextRenderer.class).setText(String.valueOf(getLevel()));
+            screen.findElementByName("score_text").getRenderer(TextRenderer.class).setText(String.valueOf(getScore()));
+            screen.findElementByName("combo_text").getRenderer(TextRenderer.class).setText("x " + getCombo());
         }
         if (screen.getScreenId().equals("level")) {
             delayLoading("hud", 2000);

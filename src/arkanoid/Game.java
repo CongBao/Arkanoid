@@ -25,9 +25,39 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Game
+ * <code>Game</code> class is the class implementing basic game logic.
+ * <code>Game</code> class will initialize a graphical user interface when the
+ * application start, but will not load assets until the method
+ * {@link arkanoid.Game#initGame()} is called.
+ * <p>
+ * Usually, all game logic should be processed in this class, and should not
+ * shift to other classes.</p>
+ * <p>
+ * Issues that beyond game logic such as GUI and audio should not be handled in
+ * this class. Instead, independent classes should be created and extending
+ * {@link arkanoid.AbstractGameState} class to deal with events.</p>
+ * <p>
+ * The structure of nodes</p>
+ * <pre>
+ * rootNode
+ * |-- table
+ * |   |-- plane
+ * |   |-- borders
+ * |   |   |-- borderL
+ * |   |   |-- borderR
+ * |   |   |-- borderT
+ * |   |-- obstacles
+ * |-- board
+ * |   |-- [board4, board3, borad2]
+ * |-- balls
+ * |   |-- [ballG]
+ * |-- launch
+ * |   |-- ballR
+ * |   |-- arrow
+ * </pre>
  *
  * @author Cong Bao
+ * @see com.jme3.app.SimpleApplication
  */
 public class Game extends SimpleApplication {
 

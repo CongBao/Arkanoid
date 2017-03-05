@@ -1,14 +1,25 @@
 package arkanoid;
 
 /**
- * AbstractGameState
- *
+ * <code>AbstractGameState</code> class provides several events for handling.
+ * All issues except game logic should be handling by extending this class.
+ * 
  * @author Cong Bao
  */
 public abstract class AbstractGameState {
 
+    /**
+     * The instance of {@link arkanoid.Game} class.
+     */
     protected Game game;
 
+    /**
+     * All sub-classes of
+     * <code>AbstractGameState</code> should provide an instance of
+     * {@link arkanoid.Game} class.
+     *
+     * @param game an instance of {@link arkanoid.Game} class
+     */
     protected AbstractGameState(Game game) {
         this.game = game;
     }

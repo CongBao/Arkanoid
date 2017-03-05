@@ -10,7 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * ScreenManager
+ * <code>ScreenManager</code> is the class to handle GUI events.
  *
  * @author Cong Bao
  */

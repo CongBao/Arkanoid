@@ -3,7 +3,7 @@ package arkanoid;
 /**
  * <code>AbstractGameState</code> class provides several events for handling.
  * All issues except game logic should be handling by extending this class.
- * 
+ *
  * @author Cong Bao
  */
 public abstract class AbstractGameState {
@@ -58,6 +58,30 @@ public abstract class AbstractGameState {
      * Triggered each time a collision occurred.
      */
     public void onCollided() {
+    }
+
+    /**
+     * Triggered each time the magnet begin to absorb the ball.
+     */
+    public void onAbsorptionStarted() {
+    }
+
+    /**
+     * Triggered each time the absorption finished.
+     */
+    public void onAbsorptionEnded() {
+    }
+
+    /**
+     * Triggered each time the bomb exploded.
+     */
+    public void onExplosionStarted() {
+    }
+
+    /**
+     * Triggered each time the explosion finished.
+     */
+    public void onExplosionEnded() {
     }
 
     /**

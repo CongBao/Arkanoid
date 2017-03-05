@@ -53,6 +53,14 @@ public class ScreenManager extends AbstractGameState implements ScreenController
         return game.getCombo();
     }
 
+    public int getItem1() {
+        return game.getItem1();
+    }
+
+    public int getItem2() {
+        return game.getItem2();
+    }
+
     @Override
     public void onGamePaused() {
         if (screen.getScreenId().equals("hud")) {
@@ -76,6 +84,20 @@ public class ScreenManager extends AbstractGameState implements ScreenController
     public void onCollided() {
         if (screen.getScreenId().equals("hud")) {
             screen.findElementByName("combo_text").getRenderer(TextRenderer.class).setText("x " + getCombo());
+        }
+    }
+
+    @Override
+    public void onAbsorptionStarted() {
+        if (screen.getScreenId().equals("hud")) {
+            screen.findElementByName("item1_text").getRenderer(TextRenderer.class).setText("x " + getItem1());
+        }
+    }
+
+    @Override
+    public void onExplosionStarted() {
+        if (screen.getScreenId().equals("hud")) {
+            screen.findElementByName("item2_text").getRenderer(TextRenderer.class).setText("x " + getItem2());
         }
     }
 
@@ -120,14 +142,20 @@ public class ScreenManager extends AbstractGameState implements ScreenController
             game.setLevel(Configuration.START_LEVEL);
             game.setScore(Configuration.START_SCORE);
             game.setCombo(Configuration.START_COMBO);
+            game.setItem1(Configuration.START_ITEM1);
+            game.setItem2(Configuration.START_ITEM2);
             nifty.getScreen("level").findElementByName("level_text").getRenderer(TextRenderer.class).setText("Level " + getLevel());
             nifty.getScreen("hud").findElementByName("score_text").getRenderer(TextRenderer.class).setText(String.valueOf(getScore()));
             nifty.getScreen("hud").findElementByName("combo_text").getRenderer(TextRenderer.class).setText("x " + getCombo());
+            nifty.getScreen("hud").findElementByName("item1_text").getRenderer(TextRenderer.class).setText("x " + getItem1());
+            nifty.getScreen("hud").findElementByName("item2_text").getRenderer(TextRenderer.class).setText("x " + getItem2());
         }
         if (screen.getScreenId().equals("hud")) {
             screen.findElementByName("level_text").getRenderer(TextRenderer.class).setText(String.valueOf(getLevel()));
             screen.findElementByName("score_text").getRenderer(TextRenderer.class).setText(String.valueOf(getScore()));
             screen.findElementByName("combo_text").getRenderer(TextRenderer.class).setText("x " + getCombo());
+            screen.findElementByName("item1_text").getRenderer(TextRenderer.class).setText("x " + getItem1());
+            screen.findElementByName("item2_text").getRenderer(TextRenderer.class).setText("x " + getItem2());
         }
         if (screen.getScreenId().equals("level")) {
             delayLoading("hud", 2000);

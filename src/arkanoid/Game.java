@@ -3,6 +3,9 @@ package arkanoid;
 import static arkanoid.Configuration.*;
 import com.jme3.app.SimpleApplication;
 import com.jme3.collision.CollisionResults;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.effect.ParticleMesh;
+import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
@@ -54,6 +57,10 @@ import java.util.logging.Logger;
  * |-- launch
  * |   |-- ballR
  * |   |-- arrow
+ * |-- props
+ * |   |-- magnet
+ * |   |-- bomb
+ * |   |   |-- flame
  * </pre>
  *
  * @author Cong Bao
@@ -70,28 +77,40 @@ public class Game extends SimpleApplication {
     private Spatial board4, board3, board2;
     private Geometry ballG, ballR;
     private Geometry arrow;
+    private Geometry magnet;
+    private ParticleEmitter flame;
     private Node table;
     private Node borders;
     private Node obstacles;
     private Node board;
     private Node balls;
     private Node launch;
+    private Node props;
+    private Node bomb;
+
+    // lights
+    private AmbientLight al;
+    private DirectionalLight dl;
 
     // volatile parameters
     private Vector3f direction;
-    private float  ballSpeed;
+    private float ballSpeed;
     private float boardSpeed;
 
     // displayed parameters
-    private int level = 1;
-    private int score = 0;
-    private int combo = 0;
+    private int level = START_LEVEL;
+    private int score = START_SCORE;
+    private int combo = START_COMBO;
+    private int item1 = START_ITEM1;
+    private int item2 = START_ITEM2;
 
     // game flags
     private boolean initialized = false;
     private boolean start = false;
     private boolean running = false;
     private boolean clear = false;
+    private boolean absorbing = false;
+    private boolean exploding = false;
 
     private AnalogListener analogHandler = new AnalogListener() {
         @Override
@@ -141,6 +160,25 @@ public class Game extends SimpleApplication {
                     gameState.onGameStarted();
                 }
                 return;
+            }
+            if (!isPressed && name.equals("Num1")) {
+                if (item1 > 0 && !absorbing) {
+                    absorbing = true;
+                    props.attachChild(magnet);
+                    item1--;
+                    gameState.onAbsorptionStarted();
+                } else if (absorbing) {
+                    absorbing = false;
+                    props.detachChild(magnet);
+                    gameState.onAbsorptionEnded();
+                }
+            }
+            if (!isPressed && name.equals("Num2")) {
+                if (item2 > 0 && !exploding) {
+                    exploding = true;
+                    item2--;
+                    gameState.onExplosionStarted();
+                }
             }
             if (!isPressed && name.equals("Space")) {
                 running = !running;
@@ -233,6 +271,43 @@ public class Game extends SimpleApplication {
         matA.setColor("Color", ColorRGBA.Red);
         arrow.setMaterial(matA);
         arrow.move(14, 1.5f, DEPTH);
+
+        // initialize magnet
+        magnet = new Geometry("magnet", new Sphere(50, 50, 1));
+        Material matM = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        matM.setColor("Color", ColorRGBA.DarkGray);
+        magnet.setMaterial(matM);
+        magnet.move(14, 14, DEPTH);
+
+        // initialize bomb
+        flame = new ParticleEmitter("Flame", ParticleMesh.Type.Point, 32);
+        flame.setSelectRandomImage(true);
+        flame.setStartColor(new ColorRGBA(1f, .4f, .05f, 1f));
+        flame.setEndColor(new ColorRGBA(.4f, .22f, .12f, 0f));
+        flame.setStartSize(1.3f);
+        flame.setEndSize(2f);
+        flame.setShape(new EmitterSphereShape(Vector3f.ZERO, 1f));
+        flame.setParticlesPerSec(0);
+        flame.setGravity(0, -5, 0);
+        flame.setLowLife(.4f);
+        flame.setHighLife(.5f);
+        flame.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 7, 0));
+        flame.getParticleInfluencer().setVelocityVariation(1f);
+        flame.setImagesX(2);
+        flame.setImagesY(2);
+        Material matF = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        matF.setTexture("Texture", assetManager.loadTexture("Textures/Effects/flame.png"));
+        matF.setBoolean("PointSprite", true);
+        flame.setMaterial(matF);
+        bomb = new Node("Bomb");
+        bomb.attachChild(flame);
+        bomb.move(14, 14, DEPTH);
+        bomb.setUserData("time", 0f);
+        bomb.setUserData("state", 0);
+        renderManager.preloadScene(bomb);
+        props = new Node("Props");
+        props.attachChild(bomb);
+        rootNode.attachChild(props);
     }
 
     /**
@@ -241,12 +316,12 @@ public class Game extends SimpleApplication {
      * Do not call it manually.
      */
     public void initLight() {
-        AmbientLight al = new AmbientLight();
-        al.setColor(ColorRGBA.White.mult(2f));
+        al = new AmbientLight();
+        al.setColor(AL_COLOR);
         rootNode.addLight(al);
 
-        DirectionalLight dl = new DirectionalLight();
-        dl.setColor(ColorRGBA.White.mult(.4f));
+        dl = new DirectionalLight();
+        dl.setColor(DL_COLOR);
         dl.setDirection(Vector3f.UNIT_Z.negate());
         rootNode.addLight(dl);
     }
@@ -258,10 +333,12 @@ public class Game extends SimpleApplication {
     public void enableKeys() {
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A), new KeyTrigger(KeyInput.KEY_LEFT));
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D), new KeyTrigger(KeyInput.KEY_RIGHT));
+        inputManager.addMapping("Num1", new KeyTrigger(KeyInput.KEY_1), new KeyTrigger(KeyInput.KEY_NUMPAD1));
+        inputManager.addMapping("Num2", new KeyTrigger(KeyInput.KEY_2), new KeyTrigger(KeyInput.KEY_NUMPAD2));
         inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addMapping("Escape", new KeyTrigger(KeyInput.KEY_ESCAPE));
         inputManager.addListener(analogHandler, "Left", "Right");
-        inputManager.addListener(actionHandler, "Space", "Esc");
+        inputManager.addListener(actionHandler, "Num1", "Num2", "Space", "Esc");
     }
 
     /**
@@ -272,6 +349,8 @@ public class Game extends SimpleApplication {
         inputManager.removeListener(actionHandler);
         inputManager.deleteMapping("Left");
         inputManager.deleteMapping("Right");
+        inputManager.deleteMapping("Num1");
+        inputManager.deleteMapping("Num2");
         inputManager.deleteMapping("Space");
         inputManager.deleteMapping("Escape");
     }
@@ -315,6 +394,10 @@ public class Game extends SimpleApplication {
             ball.setLocalTranslation(ballMap[level - 1][i]);
             balls.attachChild(ball);
         }
+
+        // configure props
+        item1 = START_ITEM1;
+        item2 = START_ITEM2;
     }
 
     /**
@@ -337,24 +420,27 @@ public class Game extends SimpleApplication {
      */
     @Override
     public void simpleUpdate(float tpf) {
+        // if not running or haven't started just return
         if (!running || !start) {
             return;
         }
 
-        // test if it should upgrade the level or complete the game
+        // test if it should upgrade the level or finish the game
         if (clear && level < TOTAL_LEVELS) {
             level++;
             score = START_SCORE;
             combo = START_COMBO;
+            item1 = START_ITEM1;
             gameState.onBallCleared();
-            start = running = clear = false;
+            start = running = clear = absorbing = exploding = false;
             return;
         } else if (clear && level >= TOTAL_LEVELS) {
             level = START_LEVEL;
             score = START_SCORE;
             combo = START_COMBO;
+            item1 = START_ITEM1;
             gameState.onLevelCleared();
-            start = running = clear = false;
+            start = running = clear = absorbing = exploding = false;
             return;
         }
 
@@ -368,13 +454,53 @@ public class Game extends SimpleApplication {
         if (ballR.getLocalTranslation().y < DEATH_BOUNDARY) {
             score = START_SCORE;
             combo = START_COMBO;
+            item1 = START_ITEM1;
             gameState.onBallLost();
-            start = running = clear = false;
+            start = running = clear = absorbing = exploding = false;
             return;
         }
 
         // keep red ball moving
         ballR.move(direction.mult(ballSpeed * tpf));
+
+        // test if the props are using
+        if (absorbing) {
+            direction = magnet.getLocalTranslation().subtract(ballR.getLocalTranslation()).normalize().mult(MAGNET_GRAVITATION).add(direction).normalize();
+            CollisionResults magnetResults = new CollisionResults();
+            magnet.collideWith(ballR.getWorldBound(), magnetResults);
+            if (magnetResults.size() > 0) {
+                Vector3f normal = magnet.getLocalTranslation().subtract(ballR.getLocalTranslation());
+                direction = normal.mult((direction.dot(normal) * 2) / normal.dot(normal)).subtract(direction).negate();
+                combo = START_COMBO;
+                gameState.onCollided();
+            }
+        }
+
+        // test if the bomb is using
+        if (exploding) {
+            bomb.setUserData("time", (Float) bomb.getUserData("time") + tpf);
+            if ((Float) bomb.getUserData("time") > 0f && (Integer) bomb.getUserData("state") == 0) {
+                ballSpeed = 0;
+                al.setColor(ColorRGBA.DarkGray);
+                dl.setColor(ColorRGBA.DarkGray);
+                bomb.setUserData("state", (Integer) bomb.getUserData("state") + 1);
+            }
+            if ((Float) bomb.getUserData("time") > .5f && (Integer) bomb.getUserData("state") == 1) {
+                flame.emitAllParticles();
+                bomb.setUserData("state", (Integer) bomb.getUserData("state") + 1);
+            }
+            if ((Float) bomb.getUserData("time") > 2f && (Integer) bomb.getUserData("state") == 2) {
+                flame.killAllParticles();
+                exploding = false;
+                ballSpeed = levConfig[level - 1].get("ballSpeed").floatValue();
+                al.setColor(AL_COLOR);
+                dl.setColor(DL_COLOR);
+                bomb.setUserData("time", 0f);
+                bomb.setUserData("state", 0);
+                bomb.setUserData("ballSpeed", null);
+                gameState.onExplosionEnded();
+            }
+        }
 
         // test the collision with borders
         if (ballR.getLocalTranslation().x <= LEFT_BOUNDARY) {
@@ -456,6 +582,22 @@ public class Game extends SimpleApplication {
         this.combo = combo;
     }
 
+    public int getItem1() {
+        return item1;
+    }
+
+    public void setItem1(int item1) {
+        this.item1 = item1;
+    }
+
+    public int getItem2() {
+        return item2;
+    }
+
+    public void setItem2(int item2) {
+        this.item2 = item2;
+    }
+
     public boolean isStart() {
         return start;
     }
@@ -466,6 +608,10 @@ public class Game extends SimpleApplication {
 
     public boolean isClear() {
         return clear;
+    }
+
+    public boolean isAbsorbing() {
+        return absorbing;
     }
 
     public AppSettings getSettings() {

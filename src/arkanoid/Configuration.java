@@ -1,5 +1,6 @@
 package arkanoid;
 
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import java.util.HashMap;
 
@@ -14,13 +15,18 @@ public final class Configuration {
     public static final int START_LEVEL = 1;
     public static final int START_SCORE = 0;
     public static final int START_COMBO = 0;
+    public static final int START_ITEM1 = 3;
+    public static final int START_ITEM2 = 1;
     public static final int TABLE_WIDTH = 28;
+    public static final float MAGNET_GRAVITATION = .05f;
     public static final float LEFT_BOUNDARY = 2.5f;
     public static final float RIGHT_BOUNDARY = 25.5f;
     public static final float TOP_BOUNDARY = 25.5f;
     public static final float BOTTOM_BOUNDARY = 1.5f;
     public static final float DEATH_BOUNDARY = 1f;
     public static final float DEPTH = 1.5f;
+    public static final ColorRGBA AL_COLOR = ColorRGBA.White.mult(2f);
+    public static final ColorRGBA DL_COLOR = ColorRGBA.White.mult(.4f);
 
     public static final HashMap<String, Number>[] levConfig;
     public static final Vector3f[][] ballMap;

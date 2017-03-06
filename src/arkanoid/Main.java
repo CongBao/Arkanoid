@@ -15,8 +15,9 @@ public class Main {
         settings.setResolution(1280, 720);
         Game game = new Game();
         game.setSettings(settings);
-        // game.setDisplayFps(false);
-        // game.setDisplayStatView(false);
+//        game.setShowSettings(false);
+//        game.setDisplayFps(false);
+//        game.setDisplayStatView(false);
         game.setPauseOnLostFocus(false);
         game.start();
     }

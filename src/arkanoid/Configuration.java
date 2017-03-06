@@ -77,7 +77,7 @@ public final class Configuration {
         // level 6
         levConfig[5] = new HashMap<String, Number>();
         levConfig[5].put("ballSpeed", 15f);
-        levConfig[5].put("ballNum", 7);
+        levConfig[5].put("ballNum", 13);
         levConfig[5].put("boardLength", 2);
         levConfig[5].put("boardSpeed", 10f);
         levConfig[5].put("boardMinX", 1f);
@@ -143,13 +143,19 @@ public final class Configuration {
         ballMap[4][6] = new Vector3f(23, 22, DEPTH);
         // level 6
         ballMap[5] = new Vector3f[levConfig[5].get("ballNum").intValue()];
-        ballMap[5][0] = new Vector3f(5, 16, DEPTH);
-        ballMap[5][1] = new Vector3f(8, 13, DEPTH);
-        ballMap[5][2] = new Vector3f(11, 10, DEPTH);
-        ballMap[5][3] = new Vector3f(14, 13, DEPTH);
-        ballMap[5][4] = new Vector3f(17, 16, DEPTH);
-        ballMap[5][5] = new Vector3f(20, 19, DEPTH);
-        ballMap[5][6] = new Vector3f(23, 22, DEPTH);
+        ballMap[5][0] = new Vector3f(5, 22, DEPTH);
+        ballMap[5][1] = new Vector3f(23, 22, DEPTH);
+        ballMap[5][2] = new Vector3f(8, 19, DEPTH);
+        ballMap[5][3] = new Vector3f(20, 19, DEPTH);
+        ballMap[5][4] = new Vector3f(11, 16, DEPTH);
+        ballMap[5][5] = new Vector3f(17, 16, DEPTH);
+        ballMap[5][6] = new Vector3f(14, 13, DEPTH);
+        ballMap[5][7] = new Vector3f(11, 10, DEPTH);
+        ballMap[5][8] = new Vector3f(17, 10, DEPTH);
+        ballMap[5][9] = new Vector3f(8, 7, DEPTH);
+        ballMap[5][10] = new Vector3f(20, 7, DEPTH);
+        ballMap[5][11] = new Vector3f(5, 4, DEPTH);
+        ballMap[5][12] = new Vector3f(23, 4, DEPTH);
     }
 
     private Configuration() {

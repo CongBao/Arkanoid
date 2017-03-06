@@ -5,7 +5,8 @@ import com.jme3.math.Vector3f;
 import java.util.HashMap;
 
 /**
- * Configuration
+ * <code>Configuration</code> class defines some constants in game.
+ * Ideally, all constants used in the game should refer from this class rather than defining independently.
  *
  * @author Cong Bao
  */
@@ -149,6 +150,9 @@ public final class Configuration {
         ballMap[5][4] = new Vector3f(17, 16, DEPTH);
         ballMap[5][5] = new Vector3f(20, 19, DEPTH);
         ballMap[5][6] = new Vector3f(23, 22, DEPTH);
+    }
+
+    private Configuration() {
     }
 
 }

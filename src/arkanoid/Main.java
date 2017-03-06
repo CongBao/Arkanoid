@@ -3,7 +3,7 @@ package arkanoid;
 import com.jme3.system.AppSettings;
 
 /**
- * Main
+ * The launch class.
  *
  * @author Cong Bao
  */

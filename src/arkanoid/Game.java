@@ -53,7 +53,7 @@ import java.util.logging.Logger;
  * |-- board
  * |   |-- [board4, board3, borad2]
  * |-- balls
- * |   |-- [ballG]
+ * |   |-- (ballG)*
  * |-- launch
  * |   |-- ballR
  * |   |-- arrow
@@ -287,7 +287,7 @@ public class Game extends SimpleApplication {
         flash.setStartColor(new ColorRGBA(1f, .8f, .36f, 1f));
         flash.setEndColor(new ColorRGBA(1f, .8f, .36f, 0f));
         flash.setStartSize(.1f);
-        flash.setEndSize(3.0f);
+        flash.setEndSize(3f);
         flash.setShape(new EmitterSphereShape(Vector3f.ZERO, .05f));
         flash.setParticlesPerSec(0);
         flash.setGravity(0, 0, 0);
@@ -297,10 +297,10 @@ public class Game extends SimpleApplication {
         flash.setVelocityVariation(1);
         flash.setImagesX(2);
         flash.setImagesY(2);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat.setTexture("Texture", assetManager.loadTexture("Textures/Effects/flash.png"));
-        mat.setBoolean("PointSprite", true);
-        flash.setMaterial(mat);
+        Material matSh = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        matSh.setTexture("Texture", assetManager.loadTexture("Textures/Effects/flash.png"));
+        matSh.setBoolean("PointSprite", true);
+        flash.setMaterial(matSh);
         flame = new ParticleEmitter("Flame", ParticleMesh.Type.Point, 32);
         flame.setSelectRandomImage(true);
         flame.setStartColor(new ColorRGBA(1f, .4f, .05f, 1f));
@@ -316,10 +316,10 @@ public class Game extends SimpleApplication {
         flame.getParticleInfluencer().setVelocityVariation(1f);
         flame.setImagesX(2);
         flame.setImagesY(2);
-        Material matF = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        matF.setTexture("Texture", assetManager.loadTexture("Textures/Effects/flame.png"));
-        matF.setBoolean("PointSprite", true);
-        flame.setMaterial(matF);
+        Material matMe = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        matMe.setTexture("Texture", assetManager.loadTexture("Textures/Effects/flame.png"));
+        matMe.setBoolean("PointSprite", true);
+        flame.setMaterial(matMe);
         bomb = new Node("Bomb");
         bomb.attachChild(flash);
         bomb.attachChild(flame);

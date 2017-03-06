@@ -60,6 +60,7 @@ import java.util.logging.Logger;
  * |-- props
  * |   |-- magnet
  * |   |-- bomb
+ * |   |   |-- flash
  * |   |   |-- flame
  * </pre>
  *
@@ -78,7 +79,7 @@ public class Game extends SimpleApplication {
     private Geometry ballG, ballR;
     private Geometry arrow;
     private Geometry magnet;
-    private ParticleEmitter flame;
+    private ParticleEmitter flash, flame;
     private Node table;
     private Node borders;
     private Node obstacles;
@@ -278,8 +279,28 @@ public class Game extends SimpleApplication {
         matM.setColor("Color", ColorRGBA.DarkGray);
         magnet.setMaterial(matM);
         magnet.move(14, 14, DEPTH);
+        magnet.setUserData("time", 0f);
 
         // initialize bomb
+        flash = new ParticleEmitter("Flash", ParticleMesh.Type.Point, 32);
+        flash.setSelectRandomImage(true);
+        flash.setStartColor(new ColorRGBA(1f, .8f, .36f, 1f));
+        flash.setEndColor(new ColorRGBA(1f, .8f, .36f, 0f));
+        flash.setStartSize(.1f);
+        flash.setEndSize(3.0f);
+        flash.setShape(new EmitterSphereShape(Vector3f.ZERO, .05f));
+        flash.setParticlesPerSec(0);
+        flash.setGravity(0, 0, 0);
+        flash.setLowLife(.2f);
+        flash.setHighLife(.2f);
+        flash.setInitialVelocity(new Vector3f(0, 5f, 0));
+        flash.setVelocityVariation(1);
+        flash.setImagesX(2);
+        flash.setImagesY(2);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat.setTexture("Texture", assetManager.loadTexture("Textures/Effects/flash.png"));
+        mat.setBoolean("PointSprite", true);
+        flash.setMaterial(mat);
         flame = new ParticleEmitter("Flame", ParticleMesh.Type.Point, 32);
         flame.setSelectRandomImage(true);
         flame.setStartColor(new ColorRGBA(1f, .4f, .05f, 1f));
@@ -300,6 +321,7 @@ public class Game extends SimpleApplication {
         matF.setBoolean("PointSprite", true);
         flame.setMaterial(matF);
         bomb = new Node("Bomb");
+        bomb.attachChild(flash);
         bomb.attachChild(flame);
         bomb.move(14, 14, DEPTH);
         bomb.setUserData("time", 0f);
@@ -396,6 +418,7 @@ public class Game extends SimpleApplication {
         }
 
         // configure props
+        props.detachChild(magnet);
         item1 = START_ITEM1;
         item2 = START_ITEM2;
     }
@@ -463,8 +486,9 @@ public class Game extends SimpleApplication {
         // keep red ball moving
         ballR.move(direction.mult(ballSpeed * tpf));
 
-        // test if the props are using
+        // test if the magnet is using
         if (absorbing) {
+            magnet.setUserData("time", (Float) magnet.getUserData("time") + tpf);
             direction = magnet.getLocalTranslation().subtract(ballR.getLocalTranslation()).normalize().mult(MAGNET_GRAVITATION).add(direction).normalize();
             CollisionResults magnetResults = new CollisionResults();
             magnet.collideWith(ballR.getWorldBound(), magnetResults);
@@ -474,6 +498,12 @@ public class Game extends SimpleApplication {
                 combo = START_COMBO;
                 gameState.onCollided();
             }
+            if ((Float) magnet.getUserData("time") > 5f) {
+                absorbing = false;
+                props.detachChild(magnet);
+                magnet.setUserData("time", 0f);
+                gameState.onAbsorptionEnded();
+            }
         }
 
         // test if the bomb is using
@@ -482,14 +512,19 @@ public class Game extends SimpleApplication {
             if ((Float) bomb.getUserData("time") > 0f && (Integer) bomb.getUserData("state") == 0) {
                 ballSpeed = 0;
                 al.setColor(ColorRGBA.DarkGray);
-                dl.setColor(ColorRGBA.DarkGray);
+                dl.setColor(ColorRGBA.Black);
                 bomb.setUserData("state", (Integer) bomb.getUserData("state") + 1);
             }
             if ((Float) bomb.getUserData("time") > .5f && (Integer) bomb.getUserData("state") == 1) {
+                flash.emitAllParticles();
+                bomb.setUserData("state", (Integer) bomb.getUserData("state") + 1);
+            }
+            if ((Float) bomb.getUserData("time") > .55f && (Integer) bomb.getUserData("state") == 2) {
                 flame.emitAllParticles();
                 bomb.setUserData("state", (Integer) bomb.getUserData("state") + 1);
             }
-            if ((Float) bomb.getUserData("time") > 2f && (Integer) bomb.getUserData("state") == 2) {
+            if ((Float) bomb.getUserData("time") > 2f && (Integer) bomb.getUserData("state") == 3) {
+                flash.killAllParticles();
                 flame.killAllParticles();
                 exploding = false;
                 ballSpeed = levConfig[level - 1].get("ballSpeed").floatValue();

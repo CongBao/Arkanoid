@@ -454,6 +454,7 @@ public class Game extends SimpleApplication {
             score = START_SCORE;
             combo = START_COMBO;
             item1 = START_ITEM1;
+            item2 = START_ITEM2;
             gameState.onBallCleared();
             start = running = clear = absorbing = exploding = false;
             return;
@@ -462,6 +463,7 @@ public class Game extends SimpleApplication {
             score = START_SCORE;
             combo = START_COMBO;
             item1 = START_ITEM1;
+            item2 = START_ITEM2;
             gameState.onLevelCleared();
             start = running = clear = absorbing = exploding = false;
             return;
@@ -478,6 +480,7 @@ public class Game extends SimpleApplication {
             score = START_SCORE;
             combo = START_COMBO;
             item1 = START_ITEM1;
+            item2 = START_ITEM2;
             gameState.onBallLost();
             start = running = clear = absorbing = exploding = false;
             return;

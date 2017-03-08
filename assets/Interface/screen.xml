@@ -103,7 +103,7 @@
                 </panel>
                 <panel id="row_2" height="33%" width="100%" align="center" childLayout="horizontal">
                     <panel id="col_2_1" height="100%" width="25%" align="center" valign="center" childLayout="center">
-                        <text id="text_2_1" text="Before Launch" font="Interface/Fonts/NotoSans40.fnt" color="#f5f5f5" width="100%" height="100%" />
+                        <text id="text_2_1" text="Before&#10;Launch" font="Interface/Fonts/NotoSans40.fnt" color="#f5f5f5" width="100%" height="100%" />
                     </panel>
                     <panel id="col_2_2" height="100%" width="25%" align="center" valign="center" childLayout="center">
                         <text id="text_2_2" text="Choose Launch Direction" font="Interface/Fonts/NotoSans20.fnt" color="#f5f5f5" width="100%" height="100%" />
@@ -119,7 +119,7 @@
                 </panel>
                 <panel id="row_3" height="33%" width="100%" align="center" childLayout="horizontal">
                     <panel id="col_3_1" height="100%" width="25%" align="center" valign="center" childLayout="center">
-                        <text id="text_3_1" text="After Launch" font="Interface/Fonts/NotoSans40.fnt" color="#f5f5f5" width="100%" height="100%" />
+                        <text id="text_3_1" text="After&#10;Launch" font="Interface/Fonts/NotoSans40.fnt" color="#f5f5f5" width="100%" height="100%" />
                     </panel>
                     <panel id="col_3_2" height="100%" width="25%" align="center" valign="center" childLayout="center">
                         <text id="text_3_2" text="Move the Paddle" font="Interface/Fonts/NotoSans20.fnt" color="#f5f5f5" width="100%" height="100%" />

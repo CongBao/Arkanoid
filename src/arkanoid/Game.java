@@ -15,6 +15,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.scene.Geometry;
@@ -52,6 +53,8 @@ import java.util.logging.Logger;
  * |   |   |-- borderT
  * |   |-- obstacles
  * |   |   |-- (brick)*
+ * |   |   |   |-- box
+ * |   |   |   |-- normal
  * |-- board
  * |   |-- [board4, board3, borad2]
  * |-- balls
@@ -165,6 +168,17 @@ public class Game extends SimpleApplication {
                 }
                 return;
             }
+            if (!isPressed && name.equals("Space")) {
+                running = !running;
+                if (running) {
+                    gameState.onGameResumed();
+                } else {
+                    gameState.onGamePaused();
+                }
+            }
+            if (!running) {
+                return;
+            }
             if (!isPressed && name.equals("Num1")) {
                 if (item1 > 0 && !absorbing) {
                     absorbing = true;
@@ -182,14 +196,6 @@ public class Game extends SimpleApplication {
                     exploding = true;
                     item2--;
                     gameState.onExplosionStarted();
-                }
-            }
-            if (!isPressed && name.equals("Space")) {
-                running = !running;
-                if (running) {
-                    gameState.onGameResumed();
-                } else {
-                    gameState.onGamePaused();
                 }
             }
         }
@@ -429,11 +435,11 @@ public class Game extends SimpleApplication {
         // configure bricks
         obstacles.detachAllChildren();
         for (int i = 0; i < levConfig[level - 1].get("brickNum").intValue(); i++) {
-            Geometry cube = brick.clone();
-            cube.setName("cube" + i);
-            cube.setMesh(new Box(Vector3f.ZERO, brickMap[level - 1][i].get("size")));
-            cube.setLocalTranslation(brickMap[level - 1][i].get("location"));
-            obstacles.attachChild(cube);
+            Geometry box = brick.clone();
+            box.setName("cube" + i);
+            box.setMesh(new Box(Vector3f.ZERO, brickMap[level - 1][i].get("size")));
+            box.setLocalTranslation(brickMap[level - 1][i].get("location"));
+            obstacles.attachChild(box);
         }
 
         // configure props
@@ -586,10 +592,18 @@ public class Game extends SimpleApplication {
 
         // test the collision with obstacles
         CollisionResults brickResults = new CollisionResults();
-        for (Spatial brick : obstacles.getChildren()) {
-            brick.collideWith(ballR.getWorldBound(), brickResults);
+        for (Spatial box : obstacles.getChildren()) {
+            box.collideWith(ballR.getWorldBound(), brickResults);
             if (brickResults.size() > 0) {
-                // TODO
+                brickResults.clear();
+                Vector3f line3d = ballR.getLocalTranslation().subtract(box.getWorldBound().getCenter());
+                Vector2f line2d = new Vector2f(line3d.x, line3d.y);
+                Vector2f unitX = new Vector2f(1, 0);
+                if (FastMath.sqr(line2d.dot(unitX)) / (line2d.lengthSquared() * unitX.lengthSquared()) < FastMath.sqr(FastMath.cos(FastMath.QUARTER_PI))) {
+                    direction.y = -direction.y;
+                } else {
+                    direction.x = -direction.x;
+                }
             }
         }
 

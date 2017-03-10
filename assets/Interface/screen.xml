@@ -6,7 +6,7 @@
     <useControls filename="Interface/custom-controls.xml" />
 
     <!-- Start Screen -->
-    <screen id="start" controller="arkanoid.ScreenManager">
+    <screen id="start" controller="arkanoid.EventManager">
         <layer id="background" childLayout="center">
             <image filename="Textures/wood.jpg"></image>
         </layer>
@@ -50,7 +50,7 @@
     </screen>
 
     <!-- Info Screen -->
-    <screen id="info" controller="arkanoid.ScreenManager">
+    <screen id="info" controller="arkanoid.EventManager">
         <layer id="vackground" childLayout="center">
             <image filename="Textures/wood.jpg"></image>
         </layer>
@@ -149,7 +149,7 @@
     </screen>
 
     <!-- Level Screen -->
-    <screen id="level" controller="arkanoid.ScreenManager">
+    <screen id="level" controller="arkanoid.EventManager">
         <layer id="background" childLayout="center">
             <image filename="Textures/wood.jpg"></image>
         </layer>
@@ -167,7 +167,7 @@
     </screen>
 
     <!-- Choose Level Screen -->
-    <screen id="choose_level" controller="arkanoid.ScreenManager">
+    <screen id="choose_level" controller="arkanoid.EventManager">
         <layer id="background" childLayout="center">
             <image filename="Textures/wood.jpg"></image>
         </layer>
@@ -236,7 +236,7 @@
     </screen>
 
     <!-- HUD Screen -->
-    <screen id="hud" controller="arkanoid.ScreenManager">
+    <screen id="hud" controller="arkanoid.EventManager">
         <layer id="background" childLayout="center">
             <!-- <image filename="Textures/wood.jpg"></image> -->
         </layer>
@@ -290,7 +290,7 @@
     </screen>
 
     <!-- Win Screen -->
-    <screen id="win" controller="arkanoid.ScreenManager">
+    <screen id="win" controller="arkanoid.EventManager">
         <layer id="background" childLayout="center">
             <image filename="Textures/wood.jpg"></image>
         </layer>
@@ -322,7 +322,7 @@
     </screen>
 
     <!-- Game Over Screen -->
-    <screen id="game_over" controller="arkanoid.ScreenManager">
+    <screen id="game_over" controller="arkanoid.EventManager">
         <layer id="background" childLayout="center">
             <image filename="Textures/wood.jpg"></image>
         </layer>

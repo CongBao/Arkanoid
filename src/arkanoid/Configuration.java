@@ -48,7 +48,7 @@ public final class Configuration {
         levConfig[1] = new HashMap<String, Number>();
         levConfig[1].put("ballSpeed", 10f);
         levConfig[1].put("ballNum", 9);
-        levConfig[1].put("brickNum", 0);
+        levConfig[1].put("brickNum", 4);
         levConfig[1].put("boardLength", 4);
         levConfig[1].put("boardSpeed", 8f);
         levConfig[1].put("boardMinX", 2f);
@@ -57,7 +57,7 @@ public final class Configuration {
         levConfig[2] = new HashMap<String, Number>();
         levConfig[2].put("ballSpeed", 10f);
         levConfig[2].put("ballNum", 10);
-        levConfig[2].put("brickNum", 2); // TODO
+        levConfig[2].put("brickNum", 0); // TODO
         levConfig[2].put("boardLength", 3);
         levConfig[2].put("boardSpeed", 9f);
         levConfig[2].put("boardMinX", 1.5f);
@@ -169,14 +169,20 @@ public final class Configuration {
         brickMap[0] = new HashMap[levConfig[0].get("brickNum").intValue()];
         // level 2
         brickMap[1] = new HashMap[levConfig[1].get("brickNum").intValue()];
+        brickMap[1][0] = new HashMap<String, Vector3f>();
+        brickMap[1][0].put("size", new Vector3f(2, 2, 2));
+        brickMap[1][0].put("location", new Vector3f(13, 13, 0));
+        brickMap[1][1] = new HashMap<String, Vector3f>();
+        brickMap[1][1].put("size", new Vector3f(2, 2, 2));
+        brickMap[1][1].put("location", new Vector3f(11, 15, 0));
+        brickMap[1][2] = new HashMap<String, Vector3f>();
+        brickMap[1][2].put("size", new Vector3f(2, 2, 2));
+        brickMap[1][2].put("location", new Vector3f(15, 15, 0));
+        brickMap[1][3] = new HashMap<String, Vector3f>();
+        brickMap[1][3].put("size", new Vector3f(2, 2, 2));
+        brickMap[1][3].put("location", new Vector3f(13, 17, 0));
         // level 3
         brickMap[2] = new HashMap[levConfig[2].get("brickNum").intValue()];
-        brickMap[2][0] = new HashMap<String, Vector3f>();
-        brickMap[2][0].put("size", Vector3f.ZERO);
-        brickMap[2][0].put("location", Vector3f.ZERO);
-        brickMap[2][1] = new HashMap<String, Vector3f>();
-        brickMap[2][1].put("size", Vector3f.ZERO);
-        brickMap[2][1].put("location", Vector3f.ZERO);
         // level 4
         brickMap[3] = new HashMap[levConfig[3].get("brickNum").intValue()];
         // level 5

@@ -21,6 +21,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.debug.Arrow;
+import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
@@ -200,12 +201,12 @@ public class Game extends SimpleApplication {
      * Do not call it manually.
      */
     public void initGui() {
-        ScreenManager screenManager = new ScreenManager(this);
-        gameState = screenManager;
+        EventManager eventManager = new EventManager(this);
+        gameState = eventManager;
 
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
         Nifty nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/screen.xml", "start", screenManager);
+        nifty.fromXml("Interface/screen.xml", "start", eventManager);
         guiViewPort.addProcessor(niftyDisplay);
     }
 
@@ -426,7 +427,14 @@ public class Game extends SimpleApplication {
         }
 
         // configure bricks
-        // TODO
+        obstacles.detachAllChildren();
+        for (int i = 0; i < levConfig[level - 1].get("brickNum").intValue(); i++) {
+            Geometry cube = brick.clone();
+            cube.setName("cube" + i);
+            cube.setMesh(new Box(Vector3f.ZERO, brickMap[level - 1][i].get("size")));
+            cube.setLocalTranslation(brickMap[level - 1][i].get("location"));
+            obstacles.attachChild(cube);
+        }
 
         // configure props
         props.detachChild(magnet);
@@ -531,6 +539,7 @@ public class Game extends SimpleApplication {
             }
             if ((Float) bomb.getUserData("time") > .5f && (Integer) bomb.getUserData("state") == 1) {
                 flash.emitAllParticles();
+                obstacles.detachAllChildren();
                 bomb.setUserData("state", (Integer) bomb.getUserData("state") + 1);
             }
             if ((Float) bomb.getUserData("time") > .55f && (Integer) bomb.getUserData("state") == 2) {
@@ -573,6 +582,15 @@ public class Game extends SimpleApplication {
             direction.y = FastMath.abs(direction.y);
             combo = START_COMBO;
             gameState.onCollided();
+        }
+
+        // test the collision with obstacles
+        CollisionResults brickResults = new CollisionResults();
+        for (Spatial brick : obstacles.getChildren()) {
+            brick.collideWith(ballR.getWorldBound(), brickResults);
+            if (brickResults.size() > 0) {
+                // TODO
+            }
         }
 
         // test the collision with green balls

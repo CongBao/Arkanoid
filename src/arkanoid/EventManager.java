@@ -10,18 +10,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * <code>ScreenManager</code> is the class to handle GUI events.
+ * <code>EventManager</code> is the class to handle GUI and audio events.
  *
  * @author Cong Bao
  */
-public class ScreenManager extends AbstractGameState implements ScreenController {
+public class EventManager extends AbstractGameState implements ScreenController {
 
     private Nifty nifty;
     private Screen screen;
 
     private final SizeValue width, height;
 
-    public ScreenManager(Game game) {
+    public EventManager(Game game) {
         super(game);
         width = new SizeValue(String.valueOf(game.getSettings().getWidth() / 5));
         height = new SizeValue(String.valueOf(game.getSettings().getHeight() / 15));

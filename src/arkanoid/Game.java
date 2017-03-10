@@ -50,6 +50,7 @@ import java.util.logging.Logger;
  * |   |   |-- borderR
  * |   |   |-- borderT
  * |   |-- obstacles
+ * |   |   |-- (brick)*
  * |-- board
  * |   |-- [board4, board3, borad2]
  * |-- balls
@@ -78,6 +79,7 @@ public class Game extends SimpleApplication {
     private Spatial board4, board3, board2;
     private Geometry ballG, ballR;
     private Geometry arrow;
+    private Geometry brick;
     private Geometry magnet;
     private ParticleEmitter flash, flame;
     private Node table;
@@ -273,6 +275,12 @@ public class Game extends SimpleApplication {
         arrow.setMaterial(matA);
         arrow.move(14, 1.5f, DEPTH);
 
+        // initialize brick
+        brick = new Geometry("brick");
+        Material matB = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        matB.setTexture("DiffuseMap", assetManager.loadTexture("Textures/wood.jpg"));
+        brick.setMaterial(matB);
+
         // initialize magnet
         magnet = new Geometry("magnet", new Sphere(50, 50, 1));
         Material matM = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -416,6 +424,9 @@ public class Game extends SimpleApplication {
             ball.setLocalTranslation(ballMap[level - 1][i]);
             balls.attachChild(ball);
         }
+
+        // configure bricks
+        // TODO
 
         // configure props
         props.detachChild(magnet);

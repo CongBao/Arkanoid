@@ -29,6 +29,7 @@ public final class Configuration {
     public static final ColorRGBA AL_COLOR = ColorRGBA.White.mult(2f);
     public static final ColorRGBA DL_COLOR = ColorRGBA.White.mult(.4f);
 
+    public static final HashMap<String, Vector3f>[][] brickMap;
     public static final HashMap<String, Number>[] levConfig;
     public static final Vector3f[][] ballMap;
 
@@ -38,6 +39,7 @@ public final class Configuration {
         levConfig[0] = new HashMap<String, Number>();
         levConfig[0].put("ballSpeed", 8f);
         levConfig[0].put("ballNum", 9);
+        levConfig[0].put("brickNum", 0);
         levConfig[0].put("boardLength", 4);
         levConfig[0].put("boardSpeed", 8f);
         levConfig[0].put("boardMinX", 2f);
@@ -46,6 +48,7 @@ public final class Configuration {
         levConfig[1] = new HashMap<String, Number>();
         levConfig[1].put("ballSpeed", 10f);
         levConfig[1].put("ballNum", 9);
+        levConfig[1].put("brickNum", 0);
         levConfig[1].put("boardLength", 4);
         levConfig[1].put("boardSpeed", 8f);
         levConfig[1].put("boardMinX", 2f);
@@ -54,6 +57,7 @@ public final class Configuration {
         levConfig[2] = new HashMap<String, Number>();
         levConfig[2].put("ballSpeed", 10f);
         levConfig[2].put("ballNum", 10);
+        levConfig[2].put("brickNum", 2); // TODO
         levConfig[2].put("boardLength", 3);
         levConfig[2].put("boardSpeed", 9f);
         levConfig[2].put("boardMinX", 1.5f);
@@ -62,6 +66,7 @@ public final class Configuration {
         levConfig[3] = new HashMap<String, Number>();
         levConfig[3].put("ballSpeed", 12f);
         levConfig[3].put("ballNum", 12);
+        levConfig[3].put("brickNum", 0); // TODO
         levConfig[3].put("boardLength", 3);
         levConfig[3].put("boardSpeed", 9f);
         levConfig[3].put("boardMinX", 1.5f);
@@ -70,6 +75,7 @@ public final class Configuration {
         levConfig[4] = new HashMap<String, Number>();
         levConfig[4].put("ballSpeed", 12f);
         levConfig[4].put("ballNum", 7);
+        levConfig[4].put("brickNum", 0); // TODO
         levConfig[4].put("boardLength", 2);
         levConfig[4].put("boardSpeed", 10f);
         levConfig[4].put("boardMinX", 1f);
@@ -78,6 +84,7 @@ public final class Configuration {
         levConfig[5] = new HashMap<String, Number>();
         levConfig[5].put("ballSpeed", 15f);
         levConfig[5].put("ballNum", 13);
+        levConfig[5].put("brickNum", 0); // TODO
         levConfig[5].put("boardLength", 2);
         levConfig[5].put("boardSpeed", 10f);
         levConfig[5].put("boardMinX", 1f);
@@ -156,6 +163,26 @@ public final class Configuration {
         ballMap[5][10] = new Vector3f(20, 7, DEPTH);
         ballMap[5][11] = new Vector3f(5, 4, DEPTH);
         ballMap[5][12] = new Vector3f(23, 4, DEPTH);
+
+        brickMap = new HashMap[TOTAL_LEVELS][]; // TODO
+        // level 1
+        brickMap[0] = new HashMap[levConfig[0].get("brickNum").intValue()];
+        // level 2
+        brickMap[1] = new HashMap[levConfig[1].get("brickNum").intValue()];
+        // level 3
+        brickMap[2] = new HashMap[levConfig[2].get("brickNum").intValue()];
+        brickMap[2][0] = new HashMap<String, Vector3f>();
+        brickMap[2][0].put("size", Vector3f.ZERO);
+        brickMap[2][0].put("location", Vector3f.ZERO);
+        brickMap[2][1] = new HashMap<String, Vector3f>();
+        brickMap[2][1].put("size", Vector3f.ZERO);
+        brickMap[2][1].put("location", Vector3f.ZERO);
+        // level 4
+        brickMap[3] = new HashMap[levConfig[3].get("brickNum").intValue()];
+        // level 5
+        brickMap[4] = new HashMap[levConfig[4].get("brickNum").intValue()];
+        // level 6
+        brickMap[5] = new HashMap[levConfig[5].get("brickNum").intValue()];
     }
 
     private Configuration() {

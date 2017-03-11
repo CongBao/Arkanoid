@@ -28,10 +28,11 @@ public final class Configuration {
     public static final float DEPTH = 1.5f;
     public static final ColorRGBA AL_COLOR = ColorRGBA.White.mult(2f);
     public static final ColorRGBA DL_COLOR = ColorRGBA.White.mult(.4f);
+    public static final Vector3f BRICK_SIZE = new Vector3f(2, 2, 2);
 
-    public static final HashMap<String, Vector3f>[][] brickMap;
     public static final HashMap<String, Number>[] levConfig;
     public static final Vector3f[][] ballMap;
+    public static final Vector3f[][] brickMap;
 
     static {
         levConfig = new HashMap[TOTAL_LEVELS];
@@ -57,7 +58,7 @@ public final class Configuration {
         levConfig[2] = new HashMap<String, Number>();
         levConfig[2].put("ballSpeed", 10f);
         levConfig[2].put("ballNum", 10);
-        levConfig[2].put("brickNum", 0); // TODO
+        levConfig[2].put("brickNum", 9);
         levConfig[2].put("boardLength", 3);
         levConfig[2].put("boardSpeed", 9f);
         levConfig[2].put("boardMinX", 1.5f);
@@ -66,7 +67,7 @@ public final class Configuration {
         levConfig[3] = new HashMap<String, Number>();
         levConfig[3].put("ballSpeed", 12f);
         levConfig[3].put("ballNum", 12);
-        levConfig[3].put("brickNum", 0); // TODO
+        levConfig[3].put("brickNum", 7);
         levConfig[3].put("boardLength", 3);
         levConfig[3].put("boardSpeed", 9f);
         levConfig[3].put("boardMinX", 1.5f);
@@ -75,7 +76,7 @@ public final class Configuration {
         levConfig[4] = new HashMap<String, Number>();
         levConfig[4].put("ballSpeed", 12f);
         levConfig[4].put("ballNum", 7);
-        levConfig[4].put("brickNum", 0); // TODO
+        levConfig[4].put("brickNum", 11);
         levConfig[4].put("boardLength", 2);
         levConfig[4].put("boardSpeed", 10f);
         levConfig[4].put("boardMinX", 1f);
@@ -84,7 +85,7 @@ public final class Configuration {
         levConfig[5] = new HashMap<String, Number>();
         levConfig[5].put("ballSpeed", 15f);
         levConfig[5].put("ballNum", 13);
-        levConfig[5].put("brickNum", 0); // TODO
+        levConfig[5].put("brickNum", 11);
         levConfig[5].put("boardLength", 2);
         levConfig[5].put("boardSpeed", 10f);
         levConfig[5].put("boardMinX", 1f);
@@ -164,31 +165,61 @@ public final class Configuration {
         ballMap[5][11] = new Vector3f(5, 4, DEPTH);
         ballMap[5][12] = new Vector3f(23, 4, DEPTH);
 
-        brickMap = new HashMap[TOTAL_LEVELS][]; // TODO
+        brickMap = new Vector3f[TOTAL_LEVELS][]; // TODO
         // level 1
-        brickMap[0] = new HashMap[levConfig[0].get("brickNum").intValue()];
+        brickMap[0] = new Vector3f[levConfig[0].get("brickNum").intValue()];
         // level 2
-        brickMap[1] = new HashMap[levConfig[1].get("brickNum").intValue()];
-        brickMap[1][0] = new HashMap<String, Vector3f>();
-        brickMap[1][0].put("size", new Vector3f(2, 2, 2));
-        brickMap[1][0].put("location", new Vector3f(13, 13, 0));
-        brickMap[1][1] = new HashMap<String, Vector3f>();
-        brickMap[1][1].put("size", new Vector3f(2, 2, 2));
-        brickMap[1][1].put("location", new Vector3f(11, 15, 0));
-        brickMap[1][2] = new HashMap<String, Vector3f>();
-        brickMap[1][2].put("size", new Vector3f(2, 2, 2));
-        brickMap[1][2].put("location", new Vector3f(15, 15, 0));
-        brickMap[1][3] = new HashMap<String, Vector3f>();
-        brickMap[1][3].put("size", new Vector3f(2, 2, 2));
-        brickMap[1][3].put("location", new Vector3f(13, 17, 0));
+        brickMap[1] = new Vector3f[levConfig[1].get("brickNum").intValue()];
+        brickMap[1][0] = new Vector3f(13, 13, 0);
+        brickMap[1][1] = new Vector3f(11, 15, 0);
+        brickMap[1][2] = new Vector3f(15, 15, 0);
+        brickMap[1][3] = new Vector3f(13, 17, 0);
         // level 3
-        brickMap[2] = new HashMap[levConfig[2].get("brickNum").intValue()];
+        brickMap[2] = new Vector3f[levConfig[2].get("brickNum").intValue()];
+        brickMap[2][0] = new Vector3f(11, 21, 0);
+        brickMap[2][1] = new Vector3f(15, 21, 0);
+        brickMap[2][2] = new Vector3f(13, 19, 0);
+        brickMap[2][3] = new Vector3f(7.473f, 10.146f, 0);
+        brickMap[2][4] = new Vector3f(11.473f, 10.146f, 0);
+        brickMap[2][5] = new Vector3f(14.527f, 10.146f, 0);
+        brickMap[2][6] = new Vector3f(18.527f, 10.146f, 0);
+        brickMap[2][7] = new Vector3f(9.473f, 8.146f, 0);
+        brickMap[2][8] = new Vector3f(16.527f, 8.146f, 0);
         // level 4
-        brickMap[3] = new HashMap[levConfig[3].get("brickNum").intValue()];
+        brickMap[3] = new Vector3f[levConfig[3].get("brickNum").intValue()];
+        brickMap[3][0] = new Vector3f(10, 21, 0);
+        brickMap[3][1] = new Vector3f(16, 21, 0);
+        brickMap[3][2] = new Vector3f(7.804f, 15, 0);
+        brickMap[3][3] = new Vector3f(13, 15, 0);
+        brickMap[3][4] = new Vector3f(18.196f, 15, 0);
+        brickMap[3][5] = new Vector3f(10, 9, 0);
+        brickMap[3][6] = new Vector3f(16, 9, 0);
         // level 5
-        brickMap[4] = new HashMap[levConfig[4].get("brickNum").intValue()];
+        brickMap[4] = new Vector3f[levConfig[4].get("brickNum").intValue()];
+        brickMap[4][0] = new Vector3f(10, 21, 0);
+        brickMap[4][1] = new Vector3f(10, 18, 0);
+        brickMap[4][2] = new Vector3f(10, 15, 0);
+        brickMap[4][3] = new Vector3f(10, 12, 0);
+        brickMap[4][4] = new Vector3f(4, 6, 0);
+        brickMap[4][5] = new Vector3f(7, 6, 0);
+        brickMap[4][6] = new Vector3f(10, 6, 0);
+        brickMap[4][7] = new Vector3f(13, 6, 0);
+        brickMap[4][8] = new Vector3f(16, 6, 0);
+        brickMap[4][9] = new Vector3f(19, 6, 0);
+        brickMap[4][10] = new Vector3f(22, 6, 0);
         // level 6
-        brickMap[5] = new HashMap[levConfig[5].get("brickNum").intValue()];
+        brickMap[5] = new Vector3f[levConfig[5].get("brickNum").intValue()];
+        brickMap[5][0] = new Vector3f(13, 21, 0);
+        brickMap[5][1] = new Vector3f(13, 18, 0);
+        brickMap[5][2] = new Vector3f(13, 15, 0);
+        brickMap[5][3] = new Vector3f(4, 12, 0);
+        brickMap[5][4] = new Vector3f(7, 12, 0);
+        brickMap[5][5] = new Vector3f(10, 12, 0);
+        brickMap[5][6] = new Vector3f(16, 12, 0);
+        brickMap[5][7] = new Vector3f(19, 12, 0);
+        brickMap[5][8] = new Vector3f(22, 12, 0);
+        brickMap[5][9] = new Vector3f(13, 9, 0);
+        brickMap[5][10] = new Vector3f(13, 6, 0);
     }
 
     private Configuration() {

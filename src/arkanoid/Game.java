@@ -53,8 +53,6 @@ import java.util.logging.Logger;
  * |   |   |-- borderT
  * |   |-- obstacles
  * |   |   |-- (brick)*
- * |   |   |   |-- box
- * |   |   |   |-- normal
  * |-- board
  * |   |-- [board4, board3, borad2]
  * |-- balls
@@ -436,9 +434,9 @@ public class Game extends SimpleApplication {
         obstacles.detachAllChildren();
         for (int i = 0; i < levConfig[level - 1].get("brickNum").intValue(); i++) {
             Geometry box = brick.clone();
-            box.setName("cube" + i);
-            box.setMesh(new Box(Vector3f.ZERO, brickMap[level - 1][i].get("size")));
-            box.setLocalTranslation(brickMap[level - 1][i].get("location"));
+            box.setName("brick" + i);
+            box.setMesh(new Box(Vector3f.ZERO, BRICK_SIZE));
+            box.setLocalTranslation(brickMap[level - 1][i]);
             obstacles.attachChild(box);
         }
 
@@ -545,7 +543,11 @@ public class Game extends SimpleApplication {
             }
             if ((Float) bomb.getUserData("time") > .5f && (Integer) bomb.getUserData("state") == 1) {
                 flash.emitAllParticles();
-                obstacles.detachAllChildren();
+                int brickNum = levConfig[level - 1].get("brickNum").intValue();
+                int num = brickNum > 0 ? FastMath.nextRandomInt(1, brickNum) : 0;
+                for (int i = 0; i < num; i++) {
+                    obstacles.detachChildAt(FastMath.nextRandomInt(0, obstacles.getChildren().size() - 1));
+                }
                 bomb.setUserData("state", (Integer) bomb.getUserData("state") + 1);
             }
             if ((Float) bomb.getUserData("time") > .55f && (Integer) bomb.getUserData("state") == 2) {
@@ -599,11 +601,22 @@ public class Game extends SimpleApplication {
                 Vector3f line3d = ballR.getLocalTranslation().subtract(box.getWorldBound().getCenter());
                 Vector2f line2d = new Vector2f(line3d.x, line3d.y);
                 Vector2f unitX = new Vector2f(1, 0);
-                if (FastMath.sqr(line2d.dot(unitX)) / (line2d.lengthSquared() * unitX.lengthSquared()) < FastMath.sqr(FastMath.cos(FastMath.QUARTER_PI))) {
-                    direction.y = -direction.y;
-                } else {
-                    direction.x = -direction.x;
+                Vector2f unitY = new Vector2f(0, 1);
+                float lineLength = line2d.length();
+                float cosX = line2d.dot(unitX) / lineLength;
+                float cosY = line2d.dot(unitY) / lineLength;
+                float cosQPi = FastMath.cos(FastMath.QUARTER_PI);
+                if (cosX >= 0 && cosX >= cosQPi) {
+                    direction.x = FastMath.abs(direction.x);
+                } else if (cosX < 0 && -cosX >= cosQPi) {
+                    direction.x = -FastMath.abs(direction.x);
+                } else if (cosY >= 0 && cosY >= cosQPi) {
+                    direction.y = FastMath.abs(direction.y);
+                } else if (cosY < 0 && -cosY >= cosQPi) {
+                    direction.y = -FastMath.abs(direction.y);
                 }
+                combo = START_COMBO;
+                gameState.onCollided();
             }
         }
 

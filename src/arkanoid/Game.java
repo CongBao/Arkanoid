@@ -2,6 +2,7 @@ package arkanoid;
 
 import static arkanoid.Configuration.*;
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.Environment;
 import com.jme3.collision.CollisionResults;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
@@ -193,7 +194,6 @@ public class Game extends SimpleApplication {
                 if (item2 > 0 && !exploding) {
                     exploding = true;
                     item2--;
-                    gameState.onExplosionStarted();
                 }
             }
         }
@@ -456,6 +456,9 @@ public class Game extends SimpleApplication {
         cam.setFrustumPerspective(45, (float) settings.getWidth() / (float) settings.getHeight(), 1, 100);
         cam.setLocation(new Vector3f(14, 14, 35));
         cam.lookAt(new Vector3f(14, 14, 0), Vector3f.UNIT_Y);
+        audioRenderer.setEnvironment(new Environment(Environment.Garage));
+        listener.setLocation(cam.getLocation());
+        listener.setRotation(cam.getRotation());
 
         initGui();
     }
@@ -522,7 +525,7 @@ public class Game extends SimpleApplication {
                 Vector3f normal = magnet.getLocalTranslation().subtract(ballR.getLocalTranslation());
                 direction = normal.mult((direction.dot(normal) * 2) / normal.dot(normal)).subtract(direction).negate();
                 combo = START_COMBO;
-                gameState.onCollided();
+                gameState.onCollided(AbstractGameState.CollisionType.MAGNET);
             }
             if ((Float) magnet.getUserData("time") > 5f) {
                 absorbing = false;
@@ -543,6 +546,7 @@ public class Game extends SimpleApplication {
             }
             if ((Float) bomb.getUserData("time") > .5f && (Integer) bomb.getUserData("state") == 1) {
                 flash.emitAllParticles();
+                gameState.onExplosionStarted();
                 int brickNum = levConfig[level - 1].get("brickNum").intValue();
                 int num = brickNum > 0 ? FastMath.nextRandomInt(1, brickNum) : 0;
                 for (int i = 0; i < num; i++) {
@@ -572,15 +576,15 @@ public class Game extends SimpleApplication {
         if (ballR.getLocalTranslation().x <= LEFT_BOUNDARY) {
             direction.x = FastMath.abs(direction.x);
             combo = START_COMBO;
-            gameState.onCollided();
+            gameState.onCollided(AbstractGameState.CollisionType.WALL);
         } else if (ballR.getLocalTranslation().x >= RIGHT_BOUNDARY) {
             direction.x = -FastMath.abs(direction.x);
             combo = START_COMBO;
-            gameState.onCollided();
+            gameState.onCollided(AbstractGameState.CollisionType.WALL);
         } else if (ballR.getLocalTranslation().y >= TOP_BOUNDARY) {
             direction.y = -FastMath.abs(direction.y);
             combo = START_COMBO;
-            gameState.onCollided();
+            gameState.onCollided(AbstractGameState.CollisionType.WALL);
         }
 
         // test the collision with board
@@ -589,7 +593,7 @@ public class Game extends SimpleApplication {
         if (boardResults.size() > 0) {
             direction.y = FastMath.abs(direction.y);
             combo = START_COMBO;
-            gameState.onCollided();
+            gameState.onCollided(AbstractGameState.CollisionType.BOARD);
         }
 
         // test the collision with obstacles
@@ -616,7 +620,7 @@ public class Game extends SimpleApplication {
                     direction.y = -FastMath.abs(direction.y);
                 }
                 combo = START_COMBO;
-                gameState.onCollided();
+                gameState.onCollided(AbstractGameState.CollisionType.WALL);
             }
         }
 
@@ -633,7 +637,7 @@ public class Game extends SimpleApplication {
         if (balls.getUserData("remove") != null) {
             combo++;
             score += combo;
-            gameState.onCollided();
+            gameState.onCollided(AbstractGameState.CollisionType.BALL);
             balls.detachChild((Spatial) balls.getUserData("remove"));
             gameState.onBallRemoved();
             Vector3f normal = balls.getUserData("normal");

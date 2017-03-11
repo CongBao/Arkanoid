@@ -1,5 +1,6 @@
 package arkanoid;
 
+import com.jme3.audio.AudioNode;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
@@ -19,10 +20,28 @@ public class EventManager extends AbstractGameState implements ScreenController 
     private Nifty nifty;
     private Screen screen;
 
+    private AudioNode ballClip, wallClip, magnetAppearClip, magentVanishClip, magentHitClip, explosionClip, winClip, lostClip;
+
     private final SizeValue width, height;
 
     public EventManager(Game game) {
         super(game);
+        ballClip = new AudioNode(game.getAssetManager(), "Sounds/ballCollision.ogg");
+        ballClip.setPositional(false);
+        wallClip = new AudioNode(game.getAssetManager(), "Sounds/wallCollision.ogg");
+        wallClip.setPositional(false);
+        magnetAppearClip = new AudioNode(game.getAssetManager(), "Sounds/magnetAppear.ogg");
+        magnetAppearClip.setPositional(false);
+        magentVanishClip = new AudioNode(game.getAssetManager(), "Sounds/magnetVanish.ogg");
+        magentVanishClip.setPositional(false);
+        magentHitClip = new AudioNode(game.getAssetManager(), "Sounds/magnetHit.ogg");
+        magentHitClip.setPositional(false);
+        explosionClip = new AudioNode(game.getAssetManager(), "Sounds/explosion.ogg");
+        explosionClip.setPositional(false);
+        winClip = new AudioNode(game.getAssetManager(), "Sounds/win.ogg");
+        winClip.setPositional(false);
+        lostClip = new AudioNode(game.getAssetManager(), "Sounds/lost.ogg");
+        lostClip.setPositional(false);
         width = new SizeValue(String.valueOf(game.getSettings().getWidth() / 5));
         height = new SizeValue(String.valueOf(game.getSettings().getHeight() / 15));
     }
@@ -81,7 +100,21 @@ public class EventManager extends AbstractGameState implements ScreenController 
     }
 
     @Override
-    public void onCollided() {
+    public void onCollided(CollisionType type) {
+        switch (type) {
+            case BALL:
+                ballClip.playInstance();
+                break;
+            case BOARD:
+            case WALL:
+                wallClip.playInstance();
+                break;
+            case MAGNET:
+                magentHitClip.playInstance();
+                break;
+            default:
+                break;
+        }
         if (screen.getScreenId().equals("hud")) {
             screen.findElementByName("combo_text").getRenderer(TextRenderer.class).setText("x " + getCombo());
         }
@@ -89,16 +122,28 @@ public class EventManager extends AbstractGameState implements ScreenController 
 
     @Override
     public void onAbsorptionStarted() {
+        magnetAppearClip.playInstance();
         if (screen.getScreenId().equals("hud")) {
             screen.findElementByName("item1_text").getRenderer(TextRenderer.class).setText("x " + getItem1());
         }
     }
 
     @Override
+    public void onAbsorptionEnded() {
+        magentVanishClip.playInstance();
+    }
+
+    @Override
     public void onExplosionStarted() {
+        explosionClip.play();
         if (screen.getScreenId().equals("hud")) {
             screen.findElementByName("item2_text").getRenderer(TextRenderer.class).setText("x " + getItem2());
         }
+    }
+
+    @Override
+    public void onExplosionEnded() {
+        explosionClip.stop();
     }
 
     @Override
@@ -159,6 +204,12 @@ public class EventManager extends AbstractGameState implements ScreenController 
         }
         if (screen.getScreenId().equals("level")) {
             delayLoading("hud", 2000);
+        }
+        if (screen.getScreenId().equals("win")) {
+            winClip.play();
+        }
+        if (screen.getScreenId().equals("game_over")) {
+            lostClip.play();
         }
     }
 

@@ -8,6 +8,10 @@ package arkanoid;
  */
 public abstract class AbstractGameState {
 
+    public enum CollisionType {
+        BALL, WALL, BOARD, MAGNET
+    }
+
     /**
      * The instance of {@link arkanoid.Game} class.
      */
@@ -56,8 +60,9 @@ public abstract class AbstractGameState {
 
     /**
      * Triggered each time a collision occurred.
+     * @param type the type of collided object
      */
-    public void onCollided() {
+    public void onCollided(CollisionType type) {
     }
 
     /**

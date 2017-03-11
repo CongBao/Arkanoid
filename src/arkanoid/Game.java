@@ -123,15 +123,17 @@ public class Game extends SimpleApplication {
         public void onAnalog(String name, float value, float tpf) {
             if (!start) {
                 if (name.equals("Left")) {
-                    Float posX = arrow.getUserData("posX");
-                    posX = posX <= -1.732f ? -1.732f : posX - tpf;
-                    ((Arrow) arrow.getMesh()).setArrowExtent(new Vector3f(posX, FastMath.sqrt(4 - FastMath.sqr(posX)), 0));
-                    arrow.setUserData("posX", posX);
+                    Float angle = arrow.getUserData("angle");
+                    angle = (angle > ARROW_HALF_MAX && angle < (FastMath.PI - ARROW_HALF_MAX)) ? FastMath.PI - ARROW_HALF_MAX : angle;
+                    angle = (angle >= (FastMath.PI - ARROW_HALF_MIN)) ? FastMath.PI - ARROW_HALF_MIN : angle + tpf * FastMath.QUARTER_PI;
+                    ((Arrow) arrow.getMesh()).setArrowExtent(new Vector3f(ARROW_LENGTH * FastMath.cos(angle), ARROW_LENGTH * FastMath.sin(angle), 0));
+                    arrow.setUserData("angle", angle);
                 } else if (name.equals("Right")) {
-                    Float posX = arrow.getUserData("posX");
-                    posX = posX >= 1.732f ? 1.732f : posX + tpf;
-                    ((Arrow) arrow.getMesh()).setArrowExtent(new Vector3f(posX, FastMath.sqrt(4 - FastMath.sqr(posX)), 0));
-                    arrow.setUserData("posX", posX);
+                    Float angle = arrow.getUserData("angle");
+                    angle = (angle > ARROW_HALF_MAX && angle < (FastMath.PI - ARROW_HALF_MAX)) ? ARROW_HALF_MAX : angle;
+                    angle = (angle <= ARROW_HALF_MIN) ? ARROW_HALF_MIN : angle - tpf * FastMath.QUARTER_PI;
+                    ((Arrow) arrow.getMesh()).setArrowExtent(new Vector3f(ARROW_LENGTH * FastMath.cos(angle), ARROW_LENGTH * FastMath.sin(angle), 0));
+                    arrow.setUserData("angle", angle);
                 }
                 return;
             }
@@ -158,8 +160,8 @@ public class Game extends SimpleApplication {
             }
             if (!start) {
                 if (!isPressed && name.equals("Space")) {
-                    Float posX = arrow.getUserData("posX");
-                    direction = new Vector3f(posX, FastMath.sqrt(4 - FastMath.sqr(posX)), 0).normalize();
+                    Float angle = arrow.getUserData("angle");
+                    direction = new Vector3f(ARROW_LENGTH * FastMath.cos(angle), ARROW_LENGTH * FastMath.sin(angle), 0).normalize();
                     start = true;
                     running = true;
                     launch.detachChild(arrow);
@@ -274,7 +276,7 @@ public class Game extends SimpleApplication {
         rootNode.attachChild(launch);
 
         // initialize arrow
-        arrow = new Geometry("arrow", new Arrow(Vector3f.UNIT_Y.mult(2)));
+        arrow = new Geometry("arrow", new Arrow(new Vector3f(ARROW_LENGTH * FastMath.cos(FastMath.QUARTER_PI), ARROW_LENGTH * FastMath.sin(FastMath.QUARTER_PI), 0)));
         Material matA = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matA.setColor("Color", ColorRGBA.Red);
         arrow.setMaterial(matA);
@@ -417,8 +419,8 @@ public class Game extends SimpleApplication {
         ballSpeed = levConfig[level - 1].get("ballSpeed").floatValue();
         ballR.setLocalTranslation(14, 1.5f, DEPTH);
         launch.attachChild(ballR);
-        arrow.setUserData("posX", 0f);
-        ((Arrow) arrow.getMesh()).setArrowExtent(Vector3f.UNIT_Y.mult(2));
+        arrow.setUserData("angle", FastMath.QUARTER_PI);
+        ((Arrow) arrow.getMesh()).setArrowExtent(new Vector3f(ARROW_LENGTH * FastMath.cos(FastMath.QUARTER_PI), ARROW_LENGTH * FastMath.sin(FastMath.QUARTER_PI), 0));
         launch.attachChild(arrow);
 
         // configure green balls

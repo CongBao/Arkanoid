@@ -542,6 +542,7 @@ public class Game extends SimpleApplication {
             bomb.setUserData("time", (Float) bomb.getUserData("time") + tpf);
             if ((Float) bomb.getUserData("time") > 0f && (Integer) bomb.getUserData("state") == 0) {
                 ballSpeed = 0;
+                disableKeys();
                 al.setColor(ColorRGBA.DarkGray);
                 dl.setColor(ColorRGBA.Black);
                 bomb.setUserData("state", (Integer) bomb.getUserData("state") + 1);
@@ -564,6 +565,7 @@ public class Game extends SimpleApplication {
                 flash.killAllParticles();
                 flame.killAllParticles();
                 exploding = false;
+                enableKeys();
                 ballSpeed = levConfig[level - 1].get("ballSpeed").floatValue();
                 al.setColor(AL_COLOR);
                 dl.setColor(DL_COLOR);

@@ -46,7 +46,7 @@ public final class Configuration {
         levConfig[0].put("ballNum", 9);
         levConfig[0].put("brickNum", 0);
         levConfig[0].put("boardLength", 4);
-        levConfig[0].put("boardSpeed", 10f);
+        levConfig[0].put("boardSpeed", 13f);
         levConfig[0].put("boardMinX", 2f);
         levConfig[0].put("boardMaxX", 22f);
         // level 2
@@ -55,7 +55,7 @@ public final class Configuration {
         levConfig[1].put("ballNum", 9);
         levConfig[1].put("brickNum", 4);
         levConfig[1].put("boardLength", 4);
-        levConfig[1].put("boardSpeed", 10f);
+        levConfig[1].put("boardSpeed", 13f);
         levConfig[1].put("boardMinX", 2f);
         levConfig[1].put("boardMaxX", 22f);
         // level 3
@@ -64,7 +64,7 @@ public final class Configuration {
         levConfig[2].put("ballNum", 10);
         levConfig[2].put("brickNum", 9);
         levConfig[2].put("boardLength", 3);
-        levConfig[2].put("boardSpeed", 11f);
+        levConfig[2].put("boardSpeed", 14f);
         levConfig[2].put("boardMinX", 1.5f);
         levConfig[2].put("boardMaxX", 22.5f);
         // level 4
@@ -73,7 +73,7 @@ public final class Configuration {
         levConfig[3].put("ballNum", 12);
         levConfig[3].put("brickNum", 7);
         levConfig[3].put("boardLength", 3);
-        levConfig[3].put("boardSpeed", 11f);
+        levConfig[3].put("boardSpeed", 14f);
         levConfig[3].put("boardMinX", 1.5f);
         levConfig[3].put("boardMaxX", 22.5f);
         // level 5
@@ -82,7 +82,7 @@ public final class Configuration {
         levConfig[4].put("ballNum", 7);
         levConfig[4].put("brickNum", 11);
         levConfig[4].put("boardLength", 2);
-        levConfig[4].put("boardSpeed", 12f);
+        levConfig[4].put("boardSpeed", 15f);
         levConfig[4].put("boardMinX", 1f);
         levConfig[4].put("boardMaxX", 23f);
         // level 6
@@ -91,7 +91,7 @@ public final class Configuration {
         levConfig[5].put("ballNum", 13);
         levConfig[5].put("brickNum", 11);
         levConfig[5].put("boardLength", 2);
-        levConfig[5].put("boardSpeed", 12f);
+        levConfig[5].put("boardSpeed", 15f);
         levConfig[5].put("boardMinX", 1f);
         levConfig[5].put("boardMaxX", 23f);
 

@@ -46,36 +46,67 @@ public class EventManager extends AbstractGameState implements ScreenController 
         height = new SizeValue(String.valueOf(game.getSettings().getHeight() / 15));
     }
 
+    /**
+     * Choose a screen to display.
+     * @param id the name of screen
+     */
     public void chooseScreen(String id) {
         nifty.gotoScreen(id);
     }
 
+    /**
+     * Call by the choose level button.
+     * @param level the level to choose
+     */
     public void chooseLevel(String level) {
         game.setLevel(Integer.parseInt(level));
         nifty.getScreen("level").findElementByName("level_text").getRenderer(TextRenderer.class).setText("Level " + getLevel());
         chooseScreen("level");
     }
 
+    /**
+     * Call by the quit game button.
+     */
     public void quitGame() {
         game.stop();
     }
 
+    /**
+     * Get the level information.
+     * @return current level
+     */
     public int getLevel() {
         return game.getLevel();
     }
 
+    /**
+     * Get the score information.
+     * @return current score
+     */
     public int getScore() {
         return game.getScore();
     }
 
+    /**
+     * Get the combo information.
+     * @return current combo
+     */
     public int getCombo() {
         return game.getCombo();
     }
 
+    /**
+     * Get the Item1 information.
+     * @return current number of item1
+     */
     public int getItem1() {
         return game.getItem1();
     }
 
+    /**
+     * Get the Item2 information
+     * @return current number of item2
+     */
     public int getItem2() {
         return game.getItem2();
     }

@@ -20,6 +20,7 @@ public class Main {
             fh.setLevel(Level.ALL);
             fh.setFormatter(new SimpleFormatter());
             Logger.getLogger("com.jme3").addHandler(fh);
+            Logger.getLogger("de.lessvoid").addHandler(fh);
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SecurityException ex) {

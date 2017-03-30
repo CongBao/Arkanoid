@@ -220,7 +220,7 @@ public class Game extends SimpleApplication {
      * Initialize the game, which includes scene initialization and light initialization.
      * This method should be called when loading assets and create a base game scene.
      * Usually, this method should be called only once.
-     * As a result, the flag <code>initialized</code> will be set as <code>true<code/>.
+     * As a result, the flag <code>initialized</code> will be set as <code>true</code>.
      */
     public void initGame() {
         if (initialized) {
